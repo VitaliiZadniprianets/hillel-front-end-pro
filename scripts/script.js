@@ -1,5 +1,12 @@
-let userName = prompt("Please enter your name:")  || "anonym";
+//Завдання №1
 
-let greeting = (userName === "admin" && "Hello admin") || "Welcome";
+let userName1 = prompt("Please enter your name:")  || "anonym";
+
+alert(userName1);
+
+let userName2 = prompt("Please enter your name:");
+
+let greeting = (userName2 === "admin" && "Hello admin") || "Welcome";
 
 alert(greeting);
+
