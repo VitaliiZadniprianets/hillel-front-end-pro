@@ -1,12 +1,16 @@
-//Завдання №1
+//Завдання №2 
 
-let userName1 = prompt("Please enter your name:")  || "anonym";
+let login = prompt("Please enter your login:");
+let password = prompt("Please enter your password:");
+let age = prompt("Please enter your age:");
 
-alert(userName1);
+(login && password) && alert("Welcome");
+(login === '' || password === '') && alert("Login or password incorrect"); 
 
-let userName2 = prompt("Please enter your name:");
+(login === '' && password === '') && alert("Login and password are required!"); 
+(login === '' && password) && alert("Login required!"); 
+(login && password === '') && alert("Password are required!"); 
+(login && password) && alert("Welcome");
 
-let greeting = (userName2 === "admin" && "Hello admin") || "Welcome";
-
-alert(greeting);
+alert((age >= 18 && age <= 28 && 'Hello') || 'Goodbay');
 
