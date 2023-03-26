@@ -54,3 +54,29 @@ document.write ("Добуток усіх цілих чисел = " + product_Of_
 
 /* 6. Знайти середнє арифметичне всіх цілих чисел від 1 до 500. */
 document.write(space + space + '6. Знайти середнє арифметичне всіх цілих чисел від 1 до 500.' + space);
+let = averageNumbers = 0 ;
+const maxNumber4 = 500 ;
+for (let i = 1 ; i<= maxNumber4; i++) {
+averageNumbers += i ;
+}
+document.write("Середнє арифметичне всіх цілих чисел від 1 до 500 = " + averageNumbers / maxNumber4 ) ;
+
+/* 7. Вивести суму лише парних чисел в діапазоні від 30 до 80. */
+document.write(space + space + '7. Вивести суму лише парних чисел в діапазоні від 30 до 80.' + space);
+let totalEven = 0 ;
+for (let i = 30 ; i <= 80 ; i ++) {
+    if (i % 2 === 1) continue ;
+    totalEven += i;    
+};
+document.write("Сума парних чисел в діапазоні від 30 до 80 = " + totalEven) ;
+
+/* 8. Вивести всі числа в діапазоні від 100 до 200 кратні 3. */
+document.write(space + space + '8. Вивести всі числа в діапазоні від 100 до 200 кратні 3.'+ space);
+const maxNumber5 = 200 ;
+for (let i = 100 ; i <= maxNumber5 ; i ++) {
+    if (!(i % 3))  {
+    document.write(i + " ")
+}
+};
+
+
