@@ -38,3 +38,19 @@ else {
 
 /* 4. Знайти суму всіх цілих чисел від 1 до 15. */
 document.write(space + space + '4. Знайти суму всіх цілих чисел від 1 до 15.' + space);
+let sum_Of_Integers_Whole_Numbers = 0 ;
+for (let i = 1 ; i<= 15; i++) {
+    sum_Of_Integers_Whole_Numbers += i ;
+};
+document.write("Сума всіх цілих чисел = " + sum_Of_Integers_Whole_Numbers) ;
+
+/* 5. Знайти добуток усіх цілих чисел від 15 до 35. */
+document.write(space + space + '5. Знайти добуток усіх цілих чисел від 15 до 35.' + space);
+let product_Of_Integers_Whole_Numbers = 1 ;
+for (let i = 15 ; i<= 35; i++) {
+    product_Of_Integers_Whole_Numbers *= i ;
+} ;
+document.write ("Добуток усіх цілих чисел = " + product_Of_Integers_Whole_Numbers) ;
+
+/* 6. Знайти середнє арифметичне всіх цілих чисел від 1 до 500. */
+document.write(space + space + '6. Знайти середнє арифметичне всіх цілих чисел від 1 до 500.' + space);
