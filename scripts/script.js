@@ -79,4 +79,36 @@ for (let i = 100 ; i <= maxNumber5 ; i ++) {
 }
 };
 
+/* 12. Надрукувати повну таблицю множення від 1 до 10. */
+document.write(space + space + '12. Надрукувати повну таблицю множення від 1 до 10.' + space);
+for (let i = 1 ; i<= 10; i++) {
+    for (let j = 1 ; j <= 10 ; j++) {
+        const result = i * j ;
+        document.write(i + "*" + j + "=" + result + space );
+    }
+}
 
+/* 9-11. Дано натуральне число. Знайти та вивести на сторінку всі його дільники. Визначити кількість його парних дільників. Знайти суму його парних дільників. */
+document.write (space + space + '9-11. Дано натуральне число. Знайти та вивести на сторінку всі його дільники. Визначити кількість його парних дільників. Знайти суму його парних дільників.' + space) ;
+let num = prompt("Введіть натуральне число:");
+let count = 0;
+let sum = 0;
+let validRange = !isNaN(num) ;
+
+if (validRange) {
+    for (let i = 1; i <= num; i++) {
+        if (num % i === 0) {  
+          document.write( i + ',');    
+          if (i % 2 === 0) {  
+            count++;          
+            sum += i;         
+          }
+        }
+      } 
+      
+      document.write(space +"Кількість парних дільників: " + count);
+      document.write(space +"Сума парних дільників: " + sum);
+      
+      } else { 
+          document.write ("Input Wrong . Введіть натуральне число");
+      }
