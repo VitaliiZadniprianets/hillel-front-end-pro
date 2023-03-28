@@ -10,7 +10,7 @@ for (let i = 10; i <= maxNumber1; i++) {
   } else {
       document.write(i + '.' )
   }
-} ;
+};
 
 /* 2. Вивести квадрати чисел від 10 до 20. */
 document.write(space + space + '2. Вивести квадрати чисел від 10 до 20.' + space);
@@ -51,7 +51,7 @@ let product_Of_Integers_Whole_Numbers = 1 ;
 
 for (let i = 15 ; i <= 35; i++) {
   product_Of_Integers_Whole_Numbers *= i ;
-} ;
+};
 document.write ("Добуток усіх цілих чисел = " + product_Of_Integers_Whole_Numbers) ;
 
 /* 6. Знайти середнє арифметичне всіх цілих чисел від 1 до 500. */
