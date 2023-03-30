@@ -31,7 +31,7 @@ let maxVal = parseInt(prompt('Введіть максимальне значен
 if (maxVal !== null) { 
 
   while (isNaN(maxVal)) {
-    minVal = parseInt(prompt("Введено некорректне значення, спробуйте ввести валідне значення."));
+    maxVal = parseInt(prompt("Введено некорректне значення, спробуйте ввести валідне значення."));
   };
 };
  
