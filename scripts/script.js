@@ -12,6 +12,7 @@ console.log ("array length " + n) ;
 const A = [];
   
 // Определяем мин //
+
 let minVal = parseInt(prompt('Введіть мінімальне значення для елементів масиву'));
 
 if (minVal !== null) { 
