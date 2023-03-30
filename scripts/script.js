@@ -23,8 +23,6 @@ if (minVal !== null) {
  
 console.log("Мінімальне значення для елементів масиву з іменем A = " + minVal );
 
-minVal = +minVal;
-
 // Определяем макс //
 
 let maxVal = parseInt(prompt('Введіть максимальне значення для елементів масиву'));
@@ -37,8 +35,6 @@ if (maxVal !== null) {
 };
  
 console.log("Максимальне значення для елементів масиву з іменем A = " + maxVal );
-
-maxVal = +maxVal;
 
 // Избежания ошибки юзера , когда мин больше макс //
 
@@ -53,3 +49,25 @@ if (maxVal < minVal ) {
   console.log("Максимальне значення для елементів масиву з іменем A = " + maxVal );
 };
 
+for (let i = 0; i < n; i++) {
+  A[i] = Math.round(Math.random() * (maxVal - minVal) + minVal); 
+};
+
+console.log(A);
+
+// сортировка от меньшего к большему  //
+A.sort(function (a, b) {
+  return a - b;
+});
+
+console.log(A, "Відсортований массив A");
+ 
+const min = A[0];
+const max = A[n - 1];
+
+console.log(min, 'Мінімальне значення массиву A');
+console.log(max, 'Максимальне значення массиву A');
+
+const B = A.slice(1, n - 1);
+
+console.log(B, 'Новий массив B  з елементи  між min та max ');
