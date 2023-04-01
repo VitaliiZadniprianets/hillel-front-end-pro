@@ -7,8 +7,8 @@ if (n % 2 !== 0) {
 
 for (let i = 0; i < n ; i += 2) {
   let temp = arr_1[i] ;
-  arr_1[i] = arr_1[i + 1 ] ;
-  arr_1[i + 1 ] = temp ;
+  arr_1[i] = arr_1[i + 1] ;
+  arr_1[i + 1] = temp ;
 };
 
 console.log(arr_1);
