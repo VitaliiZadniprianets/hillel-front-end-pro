@@ -1,21 +1,19 @@
-////// 3 задание ///////
+///////// 4 задание /////
 
-const countRows = +prompt('Введіть кількість рядків для двомірного массиву');
-const countColumns = +prompt('Введіть кількість колонок для двомірного массиву');
+let inputString = prompt("Введіть рядок:");
+let symbolDelete = prompt("Введіть символи для видалення через кому:").split(",");
 
-function createMatrix(rows, columns) {
-  let matrix = [];
+console.log(inputString);
+console.log(symbolDelete);
 
-  for(let i = 0; i < rows; i++) {
-    let row = [];
-    for(let j = 0; j < columns; j++) {
-      let val = prompt(`Введіть значення для елемента [${i}][${j}]`);
-      row.push(val);
+function removeElementsOfString(string, symbols) {
+  let result = '';
+  for (let i = 0; i < string.length; i++) {
+    if (symbols.indexOf(string[i]) === -1) {
+      result += string[i];
     };
-    matrix.push(row);
   };
-
-  return matrix;
+  return result;
 };
 
-console.log(createMatrix(countRows, countColumns));
+console.log(removeElementsOfString(inputString, symbolDelete));
