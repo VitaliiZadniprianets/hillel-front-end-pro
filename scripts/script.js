@@ -54,6 +54,3 @@ function doMath(x, znak, y) {
 };
 
 console.log(doMath(first,mathOperation,second));
-
-////// 3 задание ///////
-
