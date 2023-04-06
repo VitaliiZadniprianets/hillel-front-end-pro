@@ -20,3 +20,40 @@ console.log('Average Of Numbers: ' + averageOfNumberMassive(B));
 
 //////// 2 задание////
 
+const first = +prompt ('Введіть перше число');
+const mathOperation = prompt ('Оберіть одну з  дій: +, -, *, /, %, ^.');
+const second = +prompt ('Введіть друге число');
+
+function doMath(x, znak, y) {
+  let result;
+  
+  switch(znak) {
+    case '+':
+      result = x + y;
+      break;
+    case '-':
+      result = x - y;
+      break;
+    case '*':
+      result = x * y;
+      break;
+    case '/':
+      result = x / y;
+      break;
+    case '%':
+      result = x % y;
+      break;
+    case '^':
+      result = Math.pow(x, y);
+      break;
+    default:
+      return 'Непідтримуваний знак операції!';
+  };
+
+  return result;
+};
+
+console.log(doMath(first,mathOperation,second));
+
+////// 3 задание ///////
+
