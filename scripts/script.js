@@ -36,10 +36,10 @@ console.log("-----------------------");
 
 /// Задача № 2 ////
 
-function copy(list, cb) {
+function copy(arr, cb) {
   const result = [];
-  for (let i = 0; i < list.length; i++) {
-    result.push(cb(list[i]));
+  for (let i = 0; i < arr.length; i++) {
+    result.push(cb(arr[i]));
   };
   return result;
 };
@@ -49,6 +49,10 @@ const newL = copy(list, (value) => value * 10);
 
 console.log(list);
 console.log(newL);
+console.log("-----------------------");
+console.log(copy(list, (value) => value * 10),);
+console.log(copy(list, (value) => value));
+console.log(copy(list, (value) => value * 2));
 
 console.log("-----------------------");
 
