@@ -60,6 +60,7 @@ console.log("-----------------------");
 
 const array1 = [ 8, 9, 10, 11, 12, 13, 14];
 
+let mul10 = (value) => value * 10; 
 
 function copy(list, cb = mul10) {
     const newArray = [];
@@ -69,8 +70,6 @@ function copy(list, cb = mul10) {
     };
     return newArray;
 };
-
-let mul10 = (value) => value * 10; 
 
 console.log(copy(array1));
 
