@@ -56,7 +56,27 @@ console.log(copy(list, (value) => value * 2));
 
 console.log("-----------------------");
 
-////// 2 способ ///
+// 2 способ ///
+
+const array1 = [ 8, 9, 10, 11, 12, 13, 14];
+
+
+function copy(list, cb = mul10) {
+    const newArray = [];
+
+    for (let i = 0; i < list.length; i++) {
+        newArray[newArray.length] = cb(list[i]);
+    };
+    return newArray;
+};
+
+let mul10 = (value) => value * 10; 
+
+console.log(copy(array1));
+
+console.log("-----------------------");
+
+////// 3 способ ///
 
 let data3 = [1, 2, 3, 4, 5, 6, 7, 8];
 console.log(data3);
