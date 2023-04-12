@@ -18,9 +18,17 @@ function sumToArray (arr) {
   if (arr.length === 1 ) {
     return arr[0]; 
   };
+  const sum = arr.shift() + sumToArray(arr);
+    return sum;
+};
+
+/*function sumToArray (arr) {
+  if (arr.length === 1 ) {
+    return arr[0]; 
+  };
   const sum = arr[0] + sumToArray(arr.slice(1));
   return sum;
-};
+};*/
 
 console.log (sumToArray([1, 2, 3]));
 console.log("--------------------------");
