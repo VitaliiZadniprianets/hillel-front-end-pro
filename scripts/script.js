@@ -26,8 +26,8 @@ let data = [1, 2, 3, 4, 5, 6];
 
 console.log(data);
 
-let data1 = data.filter(function (value) {
-  return value % 2 == 0;
+let data1 = data.filter(function (value2) {
+  return value2 % 2 == 0;
 });
 
 console.log(data1);
@@ -45,14 +45,14 @@ function copy(arr, cb) {
 };
 
 const list = [1, 2, 3, 4, 5, 6, 7];
-const newL = copy(list, (value) => value * 10);
+const newL = copy(list, (value3) => value3 * 10);
 
 console.log(list);
 console.log(newL);
 console.log("-----------------------");
-console.log(copy(list, (value) => value * 10),);
-console.log(copy(list, (value) => value));
-console.log(copy(list, (value) => value * 2));
+console.log(copy(list, (value3) => value3 * 10),);
+console.log(copy(list, (value3) => value3));
+console.log(copy(list, (value3) => value3 * 2));
 
 console.log("-----------------------");
 
@@ -60,7 +60,7 @@ console.log("-----------------------");
 
 const array1 = [ 8, 9, 10, 11, 12, 13, 14];
 
-let mul10 = (value) => value * 10; 
+let mul10 = (value1) => value1 * 10; 
 
 function copy1(list, cb = mul10) {
     const newArray = [];
@@ -80,8 +80,29 @@ console.log("-----------------------");
 let data3 = [1, 2, 3, 4, 5, 6, 7, 8];
 console.log(data3);
 
-let data4 = data3.map(function (value1) {
-  return value1 * 10;
+let data4 = data3.map(function (value4) {
+  return value4 * 10;
 });
 
 console.log(data4);
+
+console.log("-----------------------");
+console.log("Переделанный способ");
+
+///// Переделанный способ////
+
+const array2 = [15, 16, 17, 18, 19, 20];
+
+let multiply10 = (value) => value * 10; 
+
+function copy3(list3, modFunc = (n) => n) {
+    const newArray = [];
+
+    for (let i = 0; i < list3.length; i++) {
+        newArray.push(modFunc(list3[i]));     
+    };
+    return newArray;
+};
+
+console.log(copy3(array2));
+console.log(copy3(array2, multiply10));
