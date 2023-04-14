@@ -95,11 +95,11 @@ const array2 = [15, 16, 17, 18, 19, 20];
 
 let multiply10 = (value) => value * 10; 
 
-function copy3(list3, modFunc = (n) => n) {
+function copy3(list3, optionalFunc = (n) => n) {
     const newArray = [];
 
     for (let i = 0; i < list3.length; i++) {
-        newArray.push(modFunc(list3[i]));     
+        newArray.push(optionalFunc(list3[i]));     
     };
     return newArray;
 };
