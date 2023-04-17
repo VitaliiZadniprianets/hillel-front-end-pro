@@ -74,10 +74,14 @@ function getTotalBalance(users) {
 };
 
 const usersWithHighBalance = filterUsersByBalance(users);
+console.log(usersWithHighBalance);
+console.log('------------------------------');
+
 const phonesWithHighBalance = getPhonesByUsers(usersWithHighBalance);
 const totalHighBalance = getTotalBalance(usersWithHighBalance);
 
 console.log("Телефонні номери користувачів з балансом більше", MIN_BALANCE + ":");
 console.log(phonesWithHighBalance);
+console.log('------------------------------');
 console.log("Сума балансів користувачів з балансом більше", MIN_BALANCE + ":");
 console.log(totalHighBalance);
