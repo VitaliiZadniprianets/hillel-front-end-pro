@@ -55,16 +55,29 @@ let users = [
   }
   ];
 
-  let filteredUsers = users.filter(user => parseFloat(user.balance.replace(',', '').replace('$', '')) > 2000);
-  console.log("Користувачі  в яких баланс більше 2000 доларів");
-  console.log(filteredUsers);
-  console.log('----------------------------------');
+  const MIN_BALANCE = 2000;
 
-  let phoneNumbers = filteredUsers.map(user => user.phone);
-  console.log(' Масив телефонних номерів користувачів, у яких баланс більше 2000 доларів.');
-  console.log(phoneNumbers);
-  console.log('----------------------------------');
+function convertBalanceToNumber(object) {
+  return parseFloat(object.balance.replace(/[$,]/g, ''));
+};
 
-  let totalBalanceusers = filteredUsers.reduce((sum, user) => sum + parseFloat(user.balance.replace(',', '').replace('$', '')), 0);
-  console.log('Сума балансів користувачів з балансом більше 2000: ');
-  console.log(totalBalanceusers);
+function filterUsersByBalance(users) {
+  return users.filter(user => convertBalanceToNumber(user) > MIN_BALANCE);
+};
+
+function getPhonesByUsers(users) {
+  return users.map(user => user.phone);
+};
+
+function getTotalBalance(users) {
+  return users.reduce((total, user) => total + convertBalanceToNumber(user), 0).toFixed(2);
+};
+
+const usersWithHighBalance = filterUsersByBalance(users);
+const phonesWithHighBalance = getPhonesByUsers(usersWithHighBalance);
+const totalHighBalance = getTotalBalance(usersWithHighBalance);
+
+console.log("Телефонні номери користувачів з балансом більше", MIN_BALANCE + ":");
+console.log(phonesWithHighBalance);
+console.log("Сума балансів користувачів з балансом більше", MIN_BALANCE + ":");
+console.log(totalHighBalance);
