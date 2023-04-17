@@ -27,3 +27,6 @@ function assignObjects1(obj1, obj2) {
 };
 
 console.log(assignObjects1(obj1,obj2));
+
+///////// Адаптувати функцію assignObjects() під невизначену кількість об'єктів. assignObjects(obj1, obj2, ....., objn); ////////
+
