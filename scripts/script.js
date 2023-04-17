@@ -16,9 +16,13 @@ function convert(obj) {
   for (const key in obj) {
     if (typeof obj[key] === 'object') {
       const nestedObj = convert(obj[key]);
-      for (const nestedKey in nestedObj) {
-        someObj[nestedKey] = nestedObj[nestedKey];
-      };
+      
+        function addToSomeObj(Obj1) {
+          for (const nestedKey in Obj1) {
+            someObj[nestedKey] = Obj1[nestedKey];
+          };
+        };
+      addToSomeObj(nestedObj);
     } else { 
       someObj[key] = obj[key];
     };
