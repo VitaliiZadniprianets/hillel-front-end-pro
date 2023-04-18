@@ -1,20 +1,20 @@
 let obj1 = { 
-a: 10,
-b: 12,
-c: 13,
-d: 'sdffddf',
-g: 20
+  a: 10,
+  b: 12,
+  c: 13,
+  d: 'sdffddf',
+  g: 20
 };
 console.log(obj1);
 
 let obj2 = {
-a: 20,
-b: 30,
-c: 40,
-g: 50,
-h: 'sddssdds',
-k: 2343,
-o:"sddasds2232323"
+  a: 20,
+  b: 30,
+  c: 40,
+  g: 50,
+  h: 'sddssdds',
+  k: 2343,
+  o:"sddasds2232323"
 };
 console.log(obj2);
 
