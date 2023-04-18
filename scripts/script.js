@@ -11,18 +11,19 @@ const obj = {
 console.log(obj);
 console.log('----------------------');
 
+function addToSomeObj(obj1, newObj) {
+  for (const nestedKey in obj1) {
+    newObj[nestedKey] = obj1[nestedKey];
+  };
+  return newObj;
+};
+
 function convert(obj) {
   const someObj = {};
   for (const key in obj) {
     if (typeof obj[key] === 'object') {
       const nestedObj = convert(obj[key]);
-      
-        function addToSomeObj(Obj1) {
-          for (const nestedKey in Obj1) {
-            someObj[nestedKey] = Obj1[nestedKey];
-          };
-        };
-      addToSomeObj(nestedObj);
+      addToSomeObj(nestedObj, someObj);
     } else { 
       someObj[key] = obj[key];
     };
