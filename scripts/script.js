@@ -44,3 +44,4 @@ console.log(data.y); // 20
 console.log(data.z); // 30
 console.log(data.p); // 600
 console.log(data.str); // 'hello'
+console.log(data);
