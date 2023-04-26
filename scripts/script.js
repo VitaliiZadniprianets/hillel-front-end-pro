@@ -1,6 +1,6 @@
 function makeSum () {
     let summary = 0 ;
-    return function (num){
+    return function (num) {
         summary += num;
         return summary;
     };
