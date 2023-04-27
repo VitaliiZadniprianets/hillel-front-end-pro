@@ -1,13 +1,11 @@
-function makeSum () {
-    let summary = 0 ;
-    return function (num) {
-        summary += num;
-        return summary;
+///// Створюємо функцію факторіал ////
+
+function factorial(n) {
+    if (n <= 1) {
+      return 1;
     };
-};
+  
+    return n * factorial(n - 1);
+  };
 
-let sum = makeSum();
-
-console.log(sum(3)); // 3
-console.log(sum(5)); // 8
-console.log(sum(20)); // 28
+  
