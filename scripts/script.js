@@ -12,7 +12,7 @@ const history = {
       '<ul class="records card card__shadow">' + template.join(" ") + "</ul>"
     );
   },
-  // Выводим список записей на экран
+  // Функция вывода  списка записей на экран
   drawRecords() {
     document.write(this.templateRecords);
   },
@@ -92,7 +92,4 @@ history.drawRecords();
 
 // Сравниваем текущие зависимости с последней записью в истории
 console.log(shape.dependencies, "shape.dependencies");
-console.log(
-  history.records[history.records.length - 1].dependencies,
-  "records"
-);
+console.log(history.records[history.records.length - 1].dependencies,"records");
