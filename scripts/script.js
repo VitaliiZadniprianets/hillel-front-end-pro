@@ -67,7 +67,7 @@ const shape = {
     });
     // Добавляем новую запись в историю
     history.records.push({
-      dependencies: this.dependencies,
+      dependencies:  Object.assign({}, this.dependencies),
       perimeter: perimeter,
     });
   },
@@ -77,11 +77,11 @@ const shape = {
 // shape.dependencies.foo = NaN; // ignored because  - sealed
 // delete shape.dependencies.left; // ignored because  - sealed
 
-// shape.perimeter = 500; // write -- call setter
+shape.perimeter = 500; // write -- call setter
 
-// console.log(shape.perimeter, "shape.perimeter"); // read -- call getter
+ console.log(shape.perimeter, "shape.perimeter"); // read -- call getter
 
-// shape.dependencies.bottom = 200;
+ shape.dependencies.bottom = 200;
 
 /// unoptimized operations
 console.log(shape.perimeter, "shape.perimeter");
