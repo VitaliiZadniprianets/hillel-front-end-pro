@@ -1,96 +1,49 @@
-// Создаем объект истории изменений
-const history = {
-  records: [], // Массив записей
-  // Геттер для получения шаблона записей
-  get templateRecords() {
-    const template = this.records.map(
-      (record) =>
-        '<li class="record">' + JSON.stringify(record, null, 50) + "</li>"
-    );
-    // Формируем список записей
-    return (
-      '<ul class="records card card__shadow">' + template.join(" ") + "</ul>"
-    );
-  },
-  // Функция вывода  списка записей на экран
-  drawRecords() {
-    document.write(this.templateRecords);
-  },
+// fetch data from server
+const fetchAllProducts = async () => {
+  return (await fetch("https://dummyjson.com/products")).json();
 };
 
-// Создаем объект фигуры
-const shape = {
-  dependencies: Object.seal({
-    left: 100,
-    right: 100,
-    top: 100,
-    bottom: 100,
-  }),
-  
-  // Геттер для получения периметра
-  get perimeter() {
-    // Проверяем, были ли изменены зависимости
-    const lastRecord = history.records[history.records.length - 1];
-    const dependenciesChanged = !lastRecord || !Object.is(
-      lastRecord.dependencies,
-      this.dependencies
-    );
-    // Если изменения были, то пересчитываем периметр и создаем новую запись в истории
-    if (dependenciesChanged) {
-      // there are maybe heavy calculations
-      const total = Object.values(this.dependencies).reduce(
-        (accm, value) => accm + value,
-        0
-      );
-      // side effect
-      history.records.push({
-        dependencies: this.dependencies,
-        perimeter: total,
-      });
-    }
-    // Возвращаем последний периметр из истории
-    return history.records[history.records.length - 1].perimeter;
-  },
-  // Сеттер для задания периметра
-  set perimeter(perimeter) {
-    // Проверяем переданный периметр на корректность
-    if (!Number.isInteger(perimeter) || perimeter < 400) {
-      return;
-    };
-    // Вычисляем размеры зависимостей и задаем их
-    const size = perimeter / 4;
-    this.dependencies = Object.seal({
-      left: size,
-      right: size,
-      top: size,
-      bottom: size,
-    });
-    // Добавляем новую запись в историю
-    history.records.push({
-      dependencies:  Object.assign({}, this.dependencies),
-      perimeter: perimeter,
-    });
-  },
+async function getAllProducts() {
+  const response = await fetchAllProducts();
+  const prouducts = response.products;
+
+  console.log(prouducts, "prouducts");
+
+  const productsTamplate = `
+   <article class="products">
+        ${prouducts.map((product) => `
+            <section class="product-item">
+                <div class="image-wrapper">
+                    <img
+                        src="${product.thumbnail}"
+                        alt=""
+                        class="image"
+                    />
+                </div>
+                <div class="content-wrapper">
+                    <div class="title">
+                        <h4>${product.title}</h4>
+                    </div>
+                    <div class="price">
+                        ${product.price}, 
+                        price with discount ${
+                        ((product.price * 100 - (product.discountPercentage / 100) * (product.price * 100))) / 100
+                        }
+                    </div>
+                    <div class="description">${product.description}</div>
+                    <div class="actions">
+                        <button id="cart"class="button green-solid cart">
+                            Add to Cart
+                        </button>
+                        <button class="button more">More Details</button>
+                    </div>
+                </div>
+            </section>  
+        `).join("")}
+   </article>
+  `;
+
+  document.getElementById("app").innerHTML = productsTamplate;
 };
 
-// Примеры использования объекта фигуры
-// shape.dependencies.foo = NaN; // ignored because  - sealed
-// delete shape.dependencies.left; // ignored because  - sealed
-
-shape.perimeter = 500; // write -- call setter
-
- console.log(shape.perimeter, "shape.perimeter"); // read -- call getter
-
- shape.dependencies.bottom = 200;
-
-/// unoptimized operations
-console.log(shape.perimeter, "shape.perimeter");
-console.log(shape.perimeter, "shape.perimeter");
-console.log(shape.perimeter, "shape.perimeter");
-
-// Отображаем список изменений на экране
-history.drawRecords();
-
-// Сравниваем текущие зависимости с последней записью в истории
-console.log(shape.dependencies, "shape.dependencies");
-console.log(history.records[history.records.length - 1].dependencies,"records");
+getAllProducts();
