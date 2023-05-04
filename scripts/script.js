@@ -1,96 +1,92 @@
-// Создаем объект истории изменений
 const history = {
-  records: [], // Массив записей
-  // Геттер для получения шаблона записей
-  get templateRecords() {
+  records: [], // история изменения perimeter и dependencies
+  get templateRecords() { // геттер, возвращающий отформатированную строку, содержащую все записи истории
     const template = this.records.map(
       (record) =>
-        '<li class="record">' + JSON.stringify(record, null, 50) + "</li>"
+      '<li class="record">' + JSON.stringify(record, null, 50) + "</li>"
     );
-    // Формируем список записей
     return (
       '<ul class="records card card__shadow">' + template.join(" ") + "</ul>"
     );
   },
-  // Функция вывода  списка записей на экран
-  drawRecords() {
+  drawRecords() { // метод, выводящий на экран все записи истории
     document.write(this.templateRecords);
   },
 };
 
-// Создаем объект фигуры
 const shape = {
-  dependencies: Object.seal({
+  dependencies: Object.seal({ // объект, содержащий значения, необходимые для вычисления периметра
     left: 100,
     right: 100,
     top: 100,
     bottom: 100,
   }),
-  
-  // Геттер для получения периметра
-  get perimeter() {
-    // Проверяем, были ли изменены зависимости
-    const lastRecord = history.records[history.records.length - 1];
-    const dependenciesChanged = !lastRecord || !Object.is(
-      lastRecord.dependencies,
-      this.dependencies
+  get perimeter() { // геттер, вычисляющий периметр на основе значений dependencies
+    if (history.records.length && (Object.keys(this.dependencies).every(key =>
+        this.dependencies[key] === history.records[history.records.length - 1].dependencies[key]
+        ))
+      ) { // если dependencies не изменились, вернуть значение perimeter из последней записи истории
+        return history.records[history.records.length - 1].perimeter;
+      };
+
+    // вычисление периметра
+    const total = Object.values(this.dependencies).reduce(
+      (accm, value) => accm + value,
+      0
     );
-    // Если изменения были, то пересчитываем периметр и создаем новую запись в истории
-    if (dependenciesChanged) {
-      // there are maybe heavy calculations
-      const total = Object.values(this.dependencies).reduce(
-        (accm, value) => accm + value,
-        0
-      );
-      // side effect
-      history.records.push({
-        dependencies: this.dependencies,
-        perimeter: total,
-      });
-    }
-    // Возвращаем последний периметр из истории
-    return history.records[history.records.length - 1].perimeter;
+
+    // добавление записи в историю
+    history.records.push({
+      dependencies: Object.assign({}, this.dependencies), // создание копии объекта dependencies для избежания неявных изменений
+      perimeter: total,
+    });
+
+    return total;
   },
-  // Сеттер для задания периметра
-  set perimeter(perimeter) {
-    // Проверяем переданный периметр на корректность
-    if (!Number.isInteger(perimeter) || perimeter < 400) {
+
+  set perimeter(perimeter) { // сеттер, задающий новое значение периметра и соответствующие значения dependencies
+    if (!Number.isInteger(perimeter) || perimeter < 400) { // если значение не является целым числом или меньше 400, ничего не делать
       return;
-    };
-    // Вычисляем размеры зависимостей и задаем их
-    const size = perimeter / 4;
-    this.dependencies = Object.seal({
+    }
+
+    const size = perimeter / 4; // вычисление размера каждой стороны
+
+    this.dependencies = Object.seal({ // задание новых значений для dependencies
       left: size,
       right: size,
       top: size,
       bottom: size,
     });
-    // Добавляем новую запись в историю
+
+    // добавление записи в историю
     history.records.push({
-      dependencies:  Object.assign({}, this.dependencies),
+      dependencies: Object.assign({}, this.dependencies), // создание копии объекта dependencies для избежания неявных изменений
       perimeter: perimeter,
     });
   },
 };
 
-// Примеры использования объекта фигуры
-// shape.dependencies.foo = NaN; // ignored because  - sealed
-// delete shape.dependencies.left; // ignored because  - sealed
 
-shape.perimeter = 500; // write -- call setter
+shape.perimeter // вычисление и вывод значения периметра на экран
+shape.perimeter // повторное вычисление значения периметра без изменений
 
- console.log(shape.perimeter, "shape.perimeter"); // read -- call getter
+shape.perimeter = 800; // изменение значения периметра
 
- shape.dependencies.bottom = 200;
+shape.perimeter // вычисление и вывод значения периметра на экран без изменений
 
-/// unoptimized operations
-console.log(shape.perimeter, "shape.perimeter");
-console.log(shape.perimeter, "shape.perimeter");
-console.log(shape.perimeter, "shape.perimeter");
+shape.dependencies.bottom = 500; // изменение значения dependencies
 
-// Отображаем список изменений на экране
+shape.perimeter // вычисление и вывод значения периметра на экран, так как значения dependencies изменили
+shape.perimeter //повторное вычисление значения периметра без изменений
+shape.perimeter //повторное вычисление значения периметра без изменений
+
+shape.dependencies.bottom = 800; //изменение значения dependencies
+
+shape.perimeter; //вычисление и вывод значения периметра на экран, так как значения dependencies изменили
+shape.perimeter; //повторное вычисление значения периметра без изменений
+
+
+shape.perimeter = 1900 ; //изменение значения периметра 
+
+// draw records on screen
 history.drawRecords();
-
-// Сравниваем текущие зависимости с последней записью в истории
-console.log(shape.dependencies, "shape.dependencies");
-console.log(history.records[history.records.length - 1].dependencies,"records");
