@@ -23,13 +23,14 @@ const shape = {
   }),
   
   get perimeter() { // геттер, вычисляющий периметр на основе значений dependencies
-    if (history.records.length && (Object.keys(this.dependencies).every(key =>
+    const dependenciesUnchanged = history.records.length && (Object.keys(this.dependencies).every(key =>
         this.dependencies[key] === history.records[history.records.length - 1].dependencies[key]
-        ))
-      ) { // если dependencies не изменились, вернуть значение perimeter из последней записи истории
-        return history.records[history.records.length - 1].perimeter;
-      };
-
+        ));
+    
+    if (dependenciesUnchanged) { // если dependencies не изменились, вернуть значение perimeter из последней записи истории
+      return history.records[history.records.length - 1].perimeter;
+    };
+  
     // вычисление периметра
     const total = Object.values(this.dependencies).reduce(
       (accm, value) => accm + value,
