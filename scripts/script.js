@@ -21,6 +21,7 @@ const shape = {
     top: 100,
     bottom: 100,
   }),
+  
   get perimeter() { // геттер, вычисляющий периметр на основе значений dependencies
     if (history.records.length && (Object.keys(this.dependencies).every(key =>
         this.dependencies[key] === history.records[history.records.length - 1].dependencies[key]
