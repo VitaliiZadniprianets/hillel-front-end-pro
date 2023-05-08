@@ -25,7 +25,7 @@ function filterProducts(products, searchCriteria) {
       (formattedTitle && !product.title.toLowerCase().replace(/\s/g, "").includes(formattedTitle)) ||
       (minPrice !== 0 && product.price < minPrice) ||
       (maxPrice !== 0 && product.price > maxPrice) ||
-      (rating !== 0 && (!product.rating || product.rating < rating))
+      (rating !== 0 && product.rating < rating)
     ) {
       return false;
     }
