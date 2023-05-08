@@ -16,7 +16,7 @@ const fetchAllProducts = async () => {
 // Функция для фильтрации продуктов
 function filterProducts(products, searchCriteria) {
   return products.filter((product) => {
-    const { title, minPrice = 0, maxPrice = 0, rating = 0 } = searchCriteria;////чтоб по умолчанию был 0/// 
+    const { title, minPrice = 0, maxPrice = 0, rating = 0 } = searchCriteria;//// по умолчанию был 0/// 
 
     // Преобразуем заголовок продукта и поисковый заголовок к нижнему регистру и удаляем пробелы
     const formattedTitle = title ? title.toLowerCase().replace(/\s/g, "") : "";
