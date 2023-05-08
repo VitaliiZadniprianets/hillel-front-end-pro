@@ -98,7 +98,7 @@ function createProductElement(product) {
 function getProductsTemplate(products) {
   if (products.length === 0) {
     return "<p>No products found.</p>";
-  }
+  };
   const productElements = products.map((product) => createProductElement(product));
   return `
     <article class="products">
@@ -113,7 +113,7 @@ async function getAllProducts() {
 
   if (!searchCriteria.title && !searchCriteria.minPrice && !searchCriteria.maxPrice && !searchCriteria.rating) {
     alert("Please enter at least one search criteria");
-  }
+  };
 
   // Запрашиваем продукты с сервера
   const response = await fetchAllProducts();
@@ -124,7 +124,18 @@ async function getAllProducts() {
   if (searchCriteria.title || searchCriteria.minPrice || searchCriteria.maxPrice || searchCriteria.rating) {
     // Фильтруем продукты по критериям только если есть заполненные критерии поиска
     filteredProducts = filterProducts(products, searchCriteria);
-  }
+  };
+
+  // Сортируем продукты по убыванию рейтинга
+  filteredProducts.sort((a, b) => {
+    if (b.rating < a.rating) {
+      return -1;
+    }
+    if (b.rating > a.rating) {
+      return 1;
+    }
+    return 0;
+  });
 
   // Создаем HTML-разметку для продуктов
   const productsTemplate = getProductsTemplate(filteredProducts);
