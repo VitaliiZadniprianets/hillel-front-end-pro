@@ -1,39 +1,58 @@
 // Функція для отримання параметрів пошуку від користувача
 function getSearchCriteria() {
-  const title = prompt("Enter product title");
-  const minPrice = parseFloat(prompt("Enter minimum price"));
-  const maxPrice = parseFloat(prompt("Enter maximum price"));
-  const rating = parseFloat(prompt("Enter minimum rating"));
+  const title = prompt("Enter product title") || "";
+  const minPrice = parseFloat(prompt("Enter minimum price")) || 0;
+  const maxPrice = parseFloat(prompt("Enter maximum price")) || 0;
+  const rating = parseFloat(prompt("Enter minimum rating"))  || 0;
 
   return { title, minPrice, maxPrice, rating };
 };
 
-// Функция для получения данных с сервера
+// Функція для отримання даних з сервера
 const fetchAllProducts = async () => {
   return (await fetch("https://dummyjson.com/products")).json();
 };
 
-// Функция для фильтрации продуктов
+// Об'єкт з функціями фільтрації
+const filters = {
+  title: (product, searchCriteria) => {
+    const { title } = searchCriteria;
+    if (title) {
+      const formattedTitle = title.toLowerCase().replace(/\s/g, "");
+      return product.title.toLowerCase().replace(/\s/g, "").includes(formattedTitle);
+    };
+    return true;
+  },
+  minPrice: (product, searchCriteria) => {
+    const { minPrice } = searchCriteria;
+    return minPrice !== 0 ? product.price >= minPrice : true;
+  },
+  maxPrice: (product, searchCriteria) => {
+    const { maxPrice } = searchCriteria;
+    return maxPrice !== 0 ? product.price <= maxPrice : true;
+  },
+  rating: (product, searchCriteria) => {
+    const { rating } = searchCriteria;
+    return rating !== 0 ? product.rating >= rating : true;
+  },
+};
+
+// Функція для фільтрації продуктів
 function filterProducts(products, searchCriteria) {
   return products.filter((product) => {
-    const { title, minPrice = 0, maxPrice = 0, rating = 0 } = searchCriteria;//// по умолчанию был 0/// 
-
-    // Преобразуем заголовок продукта и поисковый заголовок к нижнему регистру и удаляем пробелы
-    const formattedTitle = title ? title.toLowerCase().replace(/\s/g, "") : "";
-
-    if (
-      (formattedTitle && !product.title.toLowerCase().replace(/\s/g, "").includes(formattedTitle)) ||
-      (minPrice !== 0 && product.price < minPrice) ||
-      (maxPrice !== 0 && product.price > maxPrice) ||
-      (rating !== 0 && product.rating < rating)
-    ) {
-      return false;
-    }
-    return true;
+    return Object.keys(searchCriteria).every((filterKey) => {
+      const filterFn = filters[filterKey];
+      return filterFn(product, searchCriteria);
+    });
   });
 };
 
-// Функция для создания div с изображением продукта
+// Функція для сортування за рейтингом
+function sortProductsByRating(products) {
+  return products.sort((a, b) => b.rating - a.rating);
+};
+
+// Функція для створення div з зображенням продукту
 function getImageDiv(thumbnail) {
   return `
     <div class="image-wrapper">
@@ -41,7 +60,7 @@ function getImageDiv(thumbnail) {
     </div>`;
 };
 
-// Функция для создания блока с заголовком продукта
+// Функція для створення блоку з заголовком продукту
 function getProductTitle(title) {
   return `
     <div class="title">
@@ -50,24 +69,24 @@ function getProductTitle(title) {
   `;
 };
 
-// Функция для расчета цены со скидкой
+// Функція для розрахунку ціни зі знижкою
 function getPriceWithDiscount(price, discountPercentage) {
   const percent = 100;
   return price * (percent - discountPercentage) / percent;
 };
 
-// Функция для создания блока с ценой продукта
+// Функція для створення блоку з ціною продукту
 function getProductPrice(price, discountPercentage) {
   const priceWithDiscount = getPriceWithDiscount(price, discountPercentage);
   return `${price}, price with discount: ${priceWithDiscount.toFixed(2)}`;
 };
 
-// Функция для создания блока с описанием продукта
+// Функція для створення блоку з описом продукту
 function getProductDescription(description) {
   return `<div class="description">${description}</div>`;
 };
 
-// Функция для создания блока с кнопками
+// Функція для створення блоку з кнопками
 function getActionsDiv() {
   return `
     <div class="actions">
@@ -77,7 +96,7 @@ function getActionsDiv() {
   `;
 };
 
-// Функция для создания HTML-разметки продукта
+// Функція для створення HTML-розмітки продукту
 function createProductElement(product) {
   return `
     <section class="product-item">
@@ -94,54 +113,40 @@ function createProductElement(product) {
   `;
 };
 
-// Функция для создания HTML-разметки всех продуктов
+// Функція для створення HTML-розмітки всіх продуктів
 function getProductsTemplate(products) {
-  if (products.length === 0) {
-    return "<p>No products found.</p>";
-  };
+  const message = products.length === 0 ? "<p>No products found.</p>" : "";
   const productElements = products.map((product) => createProductElement(product));
   return `
     <article class="products">
+      ${message}
       ${productElements.join("")}
     </article>
   `;
 };
 
-// Главная функция, которая отображает все продукты на странице
+// Головна функція, яка відображає всі продукти на сторінці
 async function getAllProducts() {
-  const searchCriteria = getSearchCriteria(); // Получаем поисковые критерии от пользователя
+  const searchCriteria = getSearchCriteria(); // Отримуємо критерії пошуку від користувача
 
-  if (!searchCriteria.title && !searchCriteria.minPrice && !searchCriteria.maxPrice && !searchCriteria.rating) {
-    alert("Please enter at least one search criteria");
-  };
-
-  // Запрашиваем продукты с сервера
+  // Отримуємо дані з сервера
   const response = await fetchAllProducts();
   const products = response.products;
 
   let filteredProducts = products;
 
   if (searchCriteria.title || searchCriteria.minPrice || searchCriteria.maxPrice || searchCriteria.rating) {
-    // Фильтруем продукты по критериям только если есть заполненные критерии поиска
+    // Фільтруємо продукти за критеріями, лише якщо є заповнені критерії пошуку
     filteredProducts = filterProducts(products, searchCriteria);
   };
 
-  // Сортируем продукты по убыванию рейтинга
-  filteredProducts.sort((a, b) => {
-    if (b.rating < a.rating) {
-      return -1;
-    }
-    if (b.rating > a.rating) {
-      return 1;
-    }
-    return 0;
-  });
+  // Сортуємо продукти за рейтингом
+  filteredProducts = sortProductsByRating(filteredProducts);
 
-  // Создаем HTML-разметку для продуктов
+  // Створюємо HTML-розмітку для продуктів
   const productsTemplate = getProductsTemplate(filteredProducts);
-  document.body.innerHTML = productsTemplate; // Отображаем продукты на странице
+  document.body.innerHTML = productsTemplate; // Відображаємо продукти на сторінці
 };
 
-
-// Запускаем функцию для отображения всех продуктов 
+// Запускаємо функцію для відображення всіх продуктів
 getAllProducts();
