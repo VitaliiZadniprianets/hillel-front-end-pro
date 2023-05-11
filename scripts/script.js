@@ -5,3 +5,33 @@ const smartphones = {
 };
 
 console.log(smartphones);
+
+smartphones[Symbol.iterator] = function () {
+  const brands = Object.keys(this);
+  let brandIndex = 0;
+  let modelIndex = 0;
+
+  return {
+    next() {
+      const brand = brands[brandIndex];
+      const models = smartphones[brands[brandIndex]];
+      
+      if (brandIndex >= brands.length) {
+        return { done: true };
+      };
+      const model = models[modelIndex];
+      modelIndex++;
+    
+      if (modelIndex >= models.length) {
+        modelIndex = 0;
+        brandIndex++;
+      };
+      
+      return { value: `${brand} - ${model}`, done: false };
+    },
+  };
+};
+
+for (const smartphone of smartphones) {
+  console.log(smartphone);
+};
