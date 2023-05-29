@@ -1,67 +1,60 @@
 function SuperMath() {
-  this.input = function(message) {
-    return prompt(message);
-  };
-
   this.check = function(obj) {
-    let allowedOperators = ['+', '-', '/', '*', '%'];
+    let confirmation = confirm('Ви бажаєте виконати дію ' + obj.znak + ' з числами ' + obj.X + ' і ' + obj.Y + '? (Натисніть ОК для підтвердження або Скасувати для введення нових значень)');
 
-    if (!allowedOperators.includes(obj.znak)) {
-      alert('Неправильний оператор. Доступні оператори: + - / * %');
-      return;
-    }
-
-    let confirmation = this.input('Ви бажаєте виконати дію ' + obj.znak + ' з числами ' + obj.X + ' і ' + obj.Y + '? (Напишіть так або ні у поле вводу)');
-
-    if (confirmation === "так") {
+    if (confirmation) {
       let result = this.calculate(obj.X, obj.Y, obj.znak);
       alert('Результат: ' + result);
-    } else if (confirmation === "ні") {
-      let newX = parseInt(this.input('Введіть нове значення для X:'));
-      let newY = parseInt(this.input('Введіть нове значення для Y:'));
-
-      if (!isNaN(newX) && !isNaN(newY) && newX >= 0 && newY >= 0) {
-        let newZnak = this.input('Введіть новий оператор (+ - / * %):');
-        let newObject = {
-          X: newX,
-          Y: newY,
-          znak: newZnak,
-        };
-
-        let newResult = this.calculate(newObject.X, newObject.Y, newObject.znak);
-        alert('Результат: ' + newResult);
-
-        this.check(newObject);
-      } else {
-        alert('Введені значення повинні бути числами і більшими або рівними нулю.');
-      }
+    } else {
+      this.input(obj);
     }
   };
 
-  this.calculate = function(X, Y, znak) {
-    switch (znak) {
-      case '+':
-        return X + Y;
-      case '-':
-        return X - Y;
-      case '/':
-        return X / Y;
-      case '*':
-        return X * Y;
-      case '%':
-        return X % Y;
-      default:
-        console.log('Неправильний оператор. Доступні оператори: + - / * %');
-        return null;
+  this.input = function() {
+    let newX = parseInt(prompt('Введіть нове значення для X:'));
+    let newY = parseInt(prompt('Введіть нове значення для Y:'));
+
+    if (!isNaN(newX) && !isNaN(newY) && newX > 0 && newY > 0) {
+      let newZnak = prompt('Введіть новий оператор (+ - / * %):');
+      let newObject = {
+        X: newX,
+        Y: newY,
+        znak: newZnak,
+      };
+
+      let newResult = this.calculate(newObject.X, newObject.Y, newObject.znak);
+      alert('Результат: ' + newResult);
+
+      this.check(newObject);
+    } else {
+      alert('Введені значення повинні бути числами і більшими або рівними нулю.');
     }
   };
 }
 
-SuperMath.prototype.znak = '+';
+SuperMath.prototype.calculate = function(X, Y, znak) {
+  switch (znak) {
+    case '+':
+      return X + Y;
+    case '-':
+      return X - Y;
+    case '/':
+      return X / Y;
+    case '*':
+      return X * Y;
+    case '%':
+      return X % Y;
+    default:
+      alert('Неправильний оператор. Доступні оператори: + - / * %');
+      return null;
+  }
+};
 
-let obj = Object.create(SuperMath.prototype);
-obj.X = 12;
-obj.Y = 3;
+const obj = {
+  X: 12,
+  Y: 3,
+  znak: '+',
+};
 
 console.log(obj);
 
