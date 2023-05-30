@@ -7,48 +7,41 @@ function SuperMath() {
       alert('Результат: ' + result);
     } else {
       this.input(obj);
+      if (!isNaN(obj.X) && !isNaN(obj.Y) && obj.X > 0 && obj.Y > 0) {
+        let newResult = this.calculate(obj.X, obj.Y, obj.znak);
+        alert('Результат: ' + newResult);
+        this.check(obj);
+      } else {
+        alert('Введені значення повинні бути числами і більшими або рівними нулю.');
+      }
     }
   };
 
-  this.input = function() {
-    let newX = parseInt(prompt('Введіть нове значення для X:'));
-    let newY = parseInt(prompt('Введіть нове значення для Y:'));
+  this.input = function(obj) {
+    obj.X = parseInt(prompt('Введіть нове значення для X:'));
+    obj.Y = parseInt(prompt('Введіть нове значення для Y:'));
+    obj.znak = prompt('Введіть новий оператор (+ - / * %):');
+    return obj;
+  };
 
-    if (!isNaN(newX) && !isNaN(newY) && newX > 0 && newY > 0) {
-      let newZnak = prompt('Введіть новий оператор (+ - / * %):');
-      let newObject = {
-        X: newX,
-        Y: newY,
-        znak: newZnak,
-      };
-
-      let newResult = this.calculate(newObject.X, newObject.Y, newObject.znak);
-      alert('Результат: ' + newResult);
-
-      this.check(newObject);
-    } else {
-      alert('Введені значення повинні бути числами і більшими або рівними нулю.');
+  SuperMath.prototype.calculate = function(X, Y, znak) {
+    switch (znak) {
+      case '+':
+        return X + Y;
+      case '-':
+        return X - Y;
+      case '/':
+        return X / Y;
+      case '*':
+        return X * Y;
+      case '%':
+        return X % Y;
+      default:
+        alert('Неправильний оператор. Доступні оператори: + - / * %');
+        return null;
     }
   };
 }
-
-SuperMath.prototype.calculate = function(X, Y, znak) {
-  switch (znak) {
-    case '+':
-      return X + Y;
-    case '-':
-      return X - Y;
-    case '/':
-      return X / Y;
-    case '*':
-      return X * Y;
-    case '%':
-      return X % Y;
-    default:
-      alert('Неправильний оператор. Доступні оператори: + - / * %');
-      return null;
-  }
-};
 
 const obj = {
   X: 12,
