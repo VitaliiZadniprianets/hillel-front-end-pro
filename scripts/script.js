@@ -10,7 +10,6 @@ function SuperMath() {
       if (!isNaN(obj.X) && !isNaN(obj.Y) && obj.X > 0 && obj.Y > 0) {
         let newResult = this.calculate(obj.X, obj.Y, obj.znak);
         alert('Результат: ' + newResult);
-        this.check(obj);
       } else {
         alert('Введені значення повинні бути числами і більшими або рівними нулю.');
       }
