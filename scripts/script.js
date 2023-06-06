@@ -1,59 +1,47 @@
-class HTMLElement {
-  constructor(tagName, className, id) {
-    this.tagName = tagName;
-    this.className = className;
-    this.id = id;
-  }
+class PubSub {
+  subscribers = {};
 
-  rotate() {
-    console.log("rotating from HTMLElement");
-  }
+  subscribe(event, listener) {
+    const subscribers = this.subscribers;
 
-  render() {
-    console.log("rendering from HTMLElement");
-  }
-}
-
-class HTMLElementInput extends HTMLElement {
-  #typeInputAbout = "";
-  #value = "";
-  valid = false;
-
-  constructor(type, value, ...args) {
-    super(...args);
-    this.#typeInputAbout = type;
-    this.value = value;
-  }
-
-  get type() {
-    return this.#typeInputAbout;
-  }
-
-  get value() {
-    return this.#value;
-  }
-
-  set value(value) {
-    this.#value = value.trim();
-  }
-
-  someMethod(string) {
-    this.text = string || "some default text";
-    console.log("This is a method from HTMLElementInput");
-  }
-
-  validate() {
-    if (this.#value) {
-      this.valid = true;
+    if (!subscribers[event]) {
+      subscribers[event] = [listener];
     } else {
-      this.valid = false;
+      subscribers[event].push(listener);
     }
   }
+
+  unsubscribe(event, listener) {
+    const subscribers = this.subscribers[event];
+
+    if (subscribers && subscribers.length) {
+      this.subscribers[event] = subscribers.filter((sub) => sub !== listener);
+    }
+  }
+
+  /*unsubscribe(event, listener) {
+    const subscribers = this.subscribers[event];
+  
+    if (subscribers && subscribers.length) {
+      const index = subscribers.indexOf(listener);
+  
+      if (index !== -1) {
+        subscribers.splice(index, 1);
+      }
+    }
+  }*
+
+  publish(event, ...args) {
+    const listeners = this.subscribers[event];
+
+    if (!listeners || !listeners.length) {
+      return;
+    }
+
+    listeners.forEach((listener) => listener.apply(null, args));
+  }
 }
 
-let someInput = new HTMLElementInput("sometext", "Іnput", "myinput", "input class", 17);
+console.log('---starting module PubSub -----');
 
-someInput.someMethod("Hello Input");
-someInput.value = "" ;
-someInput.validate();
-console.log(someInput,someInput.valid);
+export default new PubSub();
