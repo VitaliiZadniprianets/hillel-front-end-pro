@@ -1,63 +1,56 @@
 class Human {
-  constructor(name, gender) {
+  constructor (name, age) {
     this.name = name;
-    this.gender = gender;
+    this.age = age;
+  }
+
+  humanInfo () {
+    console.log(this);
   }
 }
 
-class Apartment {
-  constructor() {
-    this.residentsOfAparts = [];
-  }
-  
-  addResident(human) {
-    this.residentsOfAparts.push(human);
-  }
-}
-
-class House {
-  constructor(maxNumbersOfFlats) {
-    this.flats = [];
-    this.maxNumbersOfFlats = maxNumbersOfFlats;
+class Car { 
+  constructor (mark,model,year,registrationNumber) {
+    this.mark = mark;
+    this.model = model;
+    this.year = year;
+    this.registrationNumber = registrationNumber;
   }
 
-  addFlat(flat) {
-    if (this.flats.length === this.maxNumbersOfFlats) {
-      console.log('The maximum number of flats is reached.');
-    } else {
-      this.flats.push(flat);
+  addOwner (human) {
+    if (human.age >= 18) {
+      this.owner = human;
+  } else { 
+    console.log(`${human.name} Ви не повнолітній, доступ заборонено`)
+    }
+  }
+
+  carInfo () {
+    console.log(this);
+    if (this.owner) {
+      this.owner.humanInfo () ;
     }
   }
 }
 
-const human1 = new Human('Valera', 'male');
-const human2 = new Human('Natali', 'female');
-const human3 = new Human('Sergey', 'male');
-const human4 = new Human('Tanya', 'female');
+const human1 = new Human('Valera', '28');
+const human2 = new Human('Natali', '15');
+const human3 = new Human('Sergey', '32');
+const human4 = new Human('Vanya', '38');
 
-console.log(human1, human2, human3, human4);
+console.log(human1,human2,human3,human4);
 
-const apartment1 = new Apartment();
-const apartment2 = new Apartment();
-const apartment3 = new Apartment();
+const car1 = new Car('Renault', 'Duster', 2014, 'ВЕ2774АР');
+const car2 = new Car('Toyota', 'Prius', 2013, 'ВН7777ВК' );
+const car3 = new Car('Hyundai', 'Sonata' , 2012 , 'АА9669АН');
 
-console.log(apartment1, apartment2, apartment3);
+console.log(car1,car2,car3);
 
-apartment1.addResident(human1);
-apartment1.addResident(human4);
-apartment2.addResident(human3);
-apartment3.addResident(human2);
+car1.addOwner(human3);
+car2.addOwner(human1);
+car3.addOwner(human2);
 
-console.log(apartment1, apartment2, apartment3);
-console.log(apartment1.residentsOfAparts, apartment2.residentsOfAparts, apartment3.residentsOfAparts);
+console.log(car1,car2,car3);
 
-const houseOfDream = new House(2);
-console.log(houseOfDream);
-
-houseOfDream.addFlat(apartment1);
-houseOfDream.addFlat(apartment2);
-
-console.log(houseOfDream);
-
-houseOfDream.addFlat(apartment3);
-console.log(houseOfDream);
+car1.carInfo();
+car2.carInfo();
