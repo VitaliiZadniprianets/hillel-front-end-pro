@@ -29,7 +29,7 @@ class PubSub {
         subscribers.splice(index, 1);
       }
     }
-  }*
+  }*/
 
   publish(event, ...args) {
     const listeners = this.subscribers[event];
