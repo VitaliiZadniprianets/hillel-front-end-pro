@@ -1,47 +1,63 @@
-class PubSub {
-  subscribers = {};
-
-  subscribe(event, listener) {
-    const subscribers = this.subscribers;
-
-    if (!subscribers[event]) {
-      subscribers[event] = [listener];
-    } else {
-      subscribers[event].push(listener);
-    }
-  }
-
-  unsubscribe(event, listener) {
-    const subscribers = this.subscribers[event];
-
-    if (subscribers && subscribers.length) {
-      this.subscribers[event] = subscribers.filter((sub) => sub !== listener);
-    }
-  }
-
-  /*unsubscribe(event, listener) {
-    const subscribers = this.subscribers[event];
-  
-    if (subscribers && subscribers.length) {
-      const index = subscribers.indexOf(listener);
-  
-      if (index !== -1) {
-        subscribers.splice(index, 1);
-      }
-    }
-  }*/
-
-  publish(event, ...args) {
-    const listeners = this.subscribers[event];
-
-    if (!listeners || !listeners.length) {
-      return;
-    }
-
-    listeners.forEach((listener) => listener.apply(null, args));
+class Human {
+  constructor(name, gender) {
+    this.name = name;
+    this.gender = gender;
   }
 }
 
-console.log('---starting module PubSub -----');
+class Apartment {
+  constructor() {
+    this.residentsOfAparts = [];
+  }
+  
+  addResident(human) {
+    this.residentsOfAparts.push(human);
+  }
+}
 
-export default new PubSub();
+class House {
+  constructor(maxNumbersOfFlats) {
+    this.flats = [];
+    this.maxNumbersOfFlats = maxNumbersOfFlats;
+  }
+
+  addFlat(flat) {
+    if (this.flats.length === this.maxNumbersOfFlats) {
+      console.log('The maximum number of flats is reached.');
+    } else {
+      this.flats.push(flat);
+    }
+  }
+}
+
+const human1 = new Human('Valera', 'male');
+const human2 = new Human('Natali', 'female');
+const human3 = new Human('Sergey', 'male');
+const human4 = new Human('Tanya', 'female');
+
+console.log(human1, human2, human3, human4);
+
+const apartment1 = new Apartment();
+const apartment2 = new Apartment();
+const apartment3 = new Apartment();
+
+console.log(apartment1, apartment2, apartment3);
+
+apartment1.addResident(human1);
+apartment1.addResident(human4);
+apartment2.addResident(human3);
+apartment3.addResident(human2);
+
+console.log(apartment1, apartment2, apartment3);
+console.log(apartment1.residentsOfAparts, apartment2.residentsOfAparts, apartment3.residentsOfAparts);
+
+const houseOfDream = new House(2);
+console.log(houseOfDream);
+
+houseOfDream.addFlat(apartment1);
+houseOfDream.addFlat(apartment2);
+
+console.log(houseOfDream);
+
+houseOfDream.addFlat(apartment3);
+console.log(houseOfDream);
