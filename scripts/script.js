@@ -1,56 +1,81 @@
-class Human {
-  constructor (name, age) {
-    this.name = name;
-    this.age = age;
+class Hamburger {
+  static SIZE_SMALL = {
+    price: 50,
+    calories: 20,
+  };
+
+  static SIZE_BIG = {
+    price: 100,
+    calories: 40,
+  };
+
+  static STUFFING_CHEESE = {
+    price: 10,
+    calories: 20,
+  };
+
+  static STUFFING_SALAD = {
+    price: 20,
+    calories: 5,
+  };
+
+  static STUFFING_POTATOES = {
+    price: 15,
+    calories: 10,
+  };
+
+  static TOPPING_SAUCE = {
+    price: 15,
+    calories: 0,
+  };
+
+  static TOPPING_MAYONNAISE = {
+    price: 20,
+    calories: 5,
+  };
+
+  constructor(size, stuffing, toppings = []) {
+    this.size = size;
+    this.stuffing = stuffing;
+    this.toppings = toppings;
   }
 
-  humanInfo () {
-    console.log(this);
+  calculatePrice() {
+    let price = this.size.price + this.stuffing.price;
+    this.toppings.forEach((topping) => {
+      price += topping.price;
+    });
+    return price;
+  }
+
+  calculateCalories() {
+    let calories = this.size.calories + this.stuffing.calories;
+    if (Array.isArray(this.toppings)) {
+      this.toppings.forEach((topping) => {
+        calories += topping.calories;
+      });
+    }
+    return calories;
+  }
+
+  addTopping(topping) {
+    if (!this.toppings) {
+      this.toppings = [];
+    }
+    this.toppings.push(topping);
   }
 }
 
-class Car { 
-  constructor (mark,model,year,registrationNumber) {
-    this.mark = mark;
-    this.model = model;
-    this.year = year;
-    this.registrationNumber = registrationNumber;
-  }
+const hamburger = new Hamburger(Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
+console.log("Calories: " + hamburger.calculateCalories());
+console.log("Price: " + hamburger.calculatePrice());
 
-  addOwner (human) {
-    if (human.age >= 18) {
-      this.owner = human;
-  } else { 
-    console.log(`${human.name} Ви не повнолітній, доступ заборонено`)
-    }
-  }
+hamburger.addTopping(Hamburger.TOPPING_MAYONNAISE);
 
-  carInfo () {
-    console.log(this);
-    if (this.owner) {
-      this.owner.humanInfo () ;
-    }
-  }
-}
+console.log("Calories with MAYONNAISE : " + hamburger.calculateCalories());
+console.log("Price with MAYONNAISE: " + hamburger.calculatePrice());
 
-const human1 = new Human('Valera', '28');
-const human2 = new Human('Natali', '15');
-const human3 = new Human('Sergey', '32');
-const human4 = new Human('Vanya', '38');
+hamburger.addTopping(Hamburger.TOPPING_SAUCE);
 
-console.log(human1,human2,human3,human4);
-
-const car1 = new Car('Renault', 'Duster', 2014, 'ВЕ2774АР');
-const car2 = new Car('Toyota', 'Prius', 2013, 'ВН7777ВК' );
-const car3 = new Car('Hyundai', 'Sonata' , 2012 , 'АА9669АН');
-
-console.log(car1,car2,car3);
-
-car1.addOwner(human3);
-car2.addOwner(human1);
-car3.addOwner(human2);
-
-console.log(car1,car2,car3);
-
-car1.carInfo();
-car2.carInfo();
+console.log("Price with sauce: " + hamburger.calculatePrice());
+console.log("Calories with sauce : " + hamburger.calculateCalories());
