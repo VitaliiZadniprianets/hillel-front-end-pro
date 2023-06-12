@@ -1,22 +1,28 @@
-const input1 = document.getElementById('input1');
-const input2 = document.getElementById('input2');
-const input3 = document.getElementById('input3');
-const textarea = document.getElementById('textarea');
+const inputs = document.querySelectorAll('input[type="text"]');
+const textarea = document.querySelector('textarea');
+
+const lastValue = Symbol('lastValue');
 
 function updateTextarea() {
-  textarea.value = `${input1.value}, ${input2.value}, ${input3.value}`;
-};
+  const values = Array.from(inputs, input => input.value);
+  textarea.value = values.join(', ');
+}
+
+inputs.forEach(input => {
+  input[lastValue] = input.value;
+});
 
 const interval = setInterval(() => {
-  if (
-    input1.value !== input1.lastValue ||
-    input2.value !== input2.lastValue ||
-    input3.value !== input3.lastValue ) {
+  let hasChanges = false;
 
-      updateTextarea();
-
-      input1.lastValue = input1.value;
-      input2.lastValue = input2.value;
-      input3.lastValue = input3.value;
+  inputs.forEach(input => {
+    if (input.value !== input[lastValue]) {
+      hasChanges = true;
+      input[lastValue] = input.value;
     }
-  }, 7000);
+  });
+
+  if (hasChanges) {
+    updateTextarea();
+  }
+}, 7000);
