@@ -12,7 +12,7 @@ function incrementCounter(blockId) {
 // Функція для збереження значення лічильника в localStorage
 function saveCounter(blockId, counterValue) {
   localStorage.setItem(blockId, counterValue);
-}
+};
 
 // Функція для отримання значення лічильника з localStorage
 function getCounter(blockId) {
@@ -23,7 +23,7 @@ function getCounter(blockId) {
     counterValue = parseInt(counterValue);
   }
   return counterValue;
-}
+};
 
 // Функція для встановлення значення лічильника
 function setCounter() {
@@ -38,7 +38,7 @@ function setCounter() {
   } else {
     alert('Блок з таким id не знайдений.');
   }
-}
+};
 
 // Функція для скидання всіх лічильників
 function clearCounters() {
@@ -48,7 +48,26 @@ function clearCounters() {
     counterElement.value = 0;
     saveCounter(blockId, 0);
   });
-}
+};
+
+// Функція для налаштування обробників подій кнопок
+function setupEventHandlers() {
+  const block1Button = document.getElementById('block1').querySelector('.click-button');
+  const block2Button = document.getElementById('block2').querySelector('.click-button');
+  const clearButton = document.getElementById('clear-button');
+  const setButton = document.getElementById('set-button');
+
+  block1Button.addEventListener('click', function() {
+    incrementCounter('block1');
+  });
+
+  block2Button.addEventListener('click', function() {
+    incrementCounter('block2');
+  });
+
+  clearButton.addEventListener('click', clearCounters);
+  setButton.addEventListener('click', setCounter);
+};
 
 // Функція для початкового встановлення значень лічильників при завантаженні сторінки
 function start() {
@@ -58,20 +77,10 @@ function start() {
     const counterValue = getCounter(blockId);
     counterElement.value = counterValue;
   });
-}
+};
 
-// Додавання обробників подій кнопкам
-document.getElementById('block1').querySelector('.click-button').addEventListener('click', function() {
-  incrementCounter('block1');
-});
+// Виклик функції налаштування обробників подій
+setupEventHandlers();
 
-document.getElementById('block2').querySelector('.click-button').addEventListener('click', function() {
-  incrementCounter('block2');
-});
-
-document.getElementById('clear-button').addEventListener('click', clearCounters);
-
-document.getElementById('set-button').addEventListener('click', setCounter);
-
-// Виклик функції start для встановлення значень лічильників
+// Виклик функції початкового встановлення значень лічильників
 start();
