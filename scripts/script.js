@@ -1,137 +1,77 @@
-/* 1 спосіб
-window.onload = function() {
-  const table = document.getElementById('myTable');
-
-  table.addEventListener('click', onClickHandler);
-
-  function onClickHandler(event) {
-    const target = event.target;
-    if (target.tagName === 'TD') {
-      const originalText = target.innerText;
-
-      const textarea = createTextarea(originalText);
-      const saveButton = createButton('Save');
-      const cancelButton = createButton('Cancel');
-
-      target.innerText = '';
-      target.append(textarea, saveButton, cancelButton);
-
-      saveButton.addEventListener('click', function() {
-        target.innerText = textarea.value;
-        cleanup();
-      });
-
-      cancelButton.addEventListener('click', function() {
-        target.innerText = originalText;
-        cleanup();
-      });
-    };
-  };
-
-  function createTextarea(value) {
-    const textarea = document.createElement('textarea');
-    textarea.value = value;
-    return textarea;
-  };
-
-  function createButton(text) {
-    const button = document.createElement('button');
-    button.innerText = text;
-    return button;
-  };
-
-  function cleanup() {
-    const textareas = table.getElementsByTagName('textarea');
-
-    Array.from(textareas).forEach(function(textarea) {
-      const cell = textarea.parentNode;
-      cell.innerText = textarea.value;
-    });
-  };
+// Функція для збільшення лічильника
+function incrementCounter(blockId) {
+  const counterElement = document
+    .getElementById(blockId)
+    .querySelector('.counter');
+  let counterValue = parseInt(counterElement.value);
+  counterValue++;
+  counterElement.value = counterValue;
+  saveCounter(blockId, counterValue);
 };
-*/
 
-///2 спосіб////
+// Функція для збереження значення лічильника в localStorage
+function saveCounter(blockId, counterValue) {
+  localStorage.setItem(blockId, counterValue);
+}
 
-window.onload = function() {
-  const table = document.getElementById('myTable');
+// Функція для отримання значення лічильника з localStorage
+function getCounter(blockId) {
+  let counterValue = localStorage.getItem(blockId);
+  if (counterValue === null) {
+    counterValue = 0;
+  } else {
+    counterValue = parseInt(counterValue);
+  }
+  return counterValue;
+}
 
-  table.addEventListener('click', onClickHandler);
+// Функція для встановлення значення лічильника
+function setCounter() {
+  const blockId = prompt('Введіть id блоку:');
+  const counterValue = parseInt(prompt('Введіть значення лічильника:'));
+  const counterElement = document
+    .getElementById(blockId)
+    ?.querySelector('.counter');
+  if (counterElement) {
+    counterElement.value = counterValue;
+    saveCounter(blockId, counterValue);
+  } else {
+    alert('Блок з таким id не знайдений.');
+  }
+}
 
-  function onClickHandler(event) {
-    const target = event.target;
-    if (target.tagName === 'TD') {
-      const originalText = target.innerText;
+// Функція для скидання всіх лічильників
+function clearCounters() {
+  const counterElements = document.querySelectorAll('.counter');
+  counterElements.forEach((counterElement) => {
+    const blockId = counterElement.parentNode.id;
+    counterElement.value = 0;
+    saveCounter(blockId, 0);
+  });
+}
 
-      const textarea = createTextarea(originalText);
-      const buttonWrapper = createButtonWrapper();
+// Функція для початкового встановлення значень лічильників при завантаженні сторінки
+function start() {
+  const counterElements = document.querySelectorAll('.counter');
+  counterElements.forEach((counterElement) => {
+    const blockId = counterElement.parentNode.id;
+    const counterValue = getCounter(blockId);
+    counterElement.value = counterValue;
+  });
+}
 
-      target.innerText = '';
-      target.append(textarea, buttonWrapper);
+// Додавання обробників подій кнопкам
+document.getElementById('block1').querySelector('.click-button').addEventListener('click', function() {
+  incrementCounter('block1');
+});
 
-      buttonWrapper.addEventListener('click', handleButtonClick);
-    };
-  };
+document.getElementById('block2').querySelector('.click-button').addEventListener('click', function() {
+  incrementCounter('block2');
+});
 
-  function handleButtonClick(event) {
-    const clickedButton = event.target;
-    if (clickedButton.tagName === 'BUTTON') {
-      const action = clickedButton.dataset.action;
-      const target = clickedButton.parentNode.parentNode;
-      const textarea = target.querySelector('textarea');
-      const originalText = textarea.dataset.originalText;
+document.getElementById('clear-button').addEventListener('click', clearCounters);
 
-      if (action === 'save') {
-        saveChanges(target, textarea.value);
-      } else if (action === 'cancel') {
-        cancelChanges(target, originalText);
-      };
-    };
-  };
+document.getElementById('set-button').addEventListener('click', setCounter);
 
-  function createTextarea(value) {
-    const textarea = document.createElement('textarea');
-    textarea.value = value;
-    textarea.dataset.originalText = value;
-    return textarea;
-  };
-
-  function createButtonWrapper() {
-    const buttonWrapper = document.createElement('div');
-    buttonWrapper.classList.add('button-wrapper');
-
-    const saveButton = createButton('Save');
-    saveButton.dataset.action = 'save';
-
-    const cancelButton = createButton('Cancel');
-    cancelButton.dataset.action = 'cancel';
-
-    buttonWrapper.append(saveButton, cancelButton);
-    return buttonWrapper;
-  };
-
-  function createButton(text) {
-    const button = document.createElement('button');
-    button.innerText = text;
-    return button;
-  };
-
-  function saveChanges(target, value) {
-    target.innerText = value;
-    cleanup();
-  };
-
-  function cancelChanges(target, value) {
-    target.innerText = value;
-    cleanup();
-  };
-
-  function cleanup() {
-    const textareas = table.getElementsByTagName('textarea');
-
-    Array.from(textareas).forEach(function(textarea) {
-      const cell = textarea.parentNode;
-      cell.innerText = textarea.value;
-    });
-  };
-};
+// Виклик функції start для встановлення значень лічильників
+start();
