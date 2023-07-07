@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const port = 3000;
 const data = require('./data.json');
 
 const filterByStock = (isStock) => (product) => product.productStock === isStock;
@@ -11,7 +12,7 @@ const filterByPriceRange = (minPrice, maxPrice) => (product) => {
 
 const filterByProductName = (productName) => (product) =>
   product.productName.toLowerCase().includes(productName.toLowerCase());
-  
+
 const findProductById = (productId) => (product) => product.productId === productId;
 
 app.get('/products', (req, res) => {
@@ -50,8 +51,6 @@ app.get('/products/:id', (req, res) => {
     res.status(404).json({ message: 'Product not found' });
   }
 });
-
-const port = 3000;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
