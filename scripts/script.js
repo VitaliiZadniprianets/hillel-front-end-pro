@@ -1,114 +1,109 @@
-window.onload = function () {
-  const weatherBlock = document.getElementById("weather");
-  const updatedElements = [...document.querySelectorAll(".weather-value")];
+// Подключение необходимых модулей
+const path = require("path"); // Модуль для работы с путями файлов и директорий
+const HtmlWebpackPlugin = require("html-webpack-plugin"); // Плагин для генерации HTML-файлов
+const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // Плагин для извлечения CSS в отдельные файлы
 
-  function showWeatherBlock() {
-    weatherBlock.classList.remove("hidden");
-  }
+// Вывод в консоль абсолютного пути до директории "src", используемой как контекст для сборки проекта
+console.log(path.resolve(__dirname, "src"), 'path.resolve(__dirname, "src")');
 
-  function hideWeatherBlock() {
-    weatherBlock.classList.add("hidden");
-  }
 
-  const textUpdater = (element, data) => {
-    element.textContent = data;
-  };
+// Функция для генерации имени файла с уникальным хэшем ([contenthash]) для кэширования
+const getFileName = (ext) => `[name].[contenthash].${ext}`;
+
+module.exports = {
+  mode: "development",
+  context: path.resolve(__dirname, "src"),
+  
+  // Режим сборки: разработка
+  mode: "development",
+  
+  // Контекст сборки - директория "src"
+  context: path.resolve(__dirname, "src"),
 
   
-  const genWeatherIconLink = (icon) => {
-    return `http://openweathermap.org/img/wn/${icon}.png`;
-  };
+  // Точки входа для сборки проекта
+  entry: {
+    main: "./js/index.js", // Точка входа для основного приложения
+    lib: "./js/lib.js", // Точка входа для вспомогательной библиотеки
+  },
+
+
+
+
+  // Конфигурация выходных файлов сборки
+  output: {
+    // Путь для сохранения сборки - директория "dist"
+    path: path.resolve("dist"),
+    
+    // Имя выходного файла JavaScript-бандла, используется функция getFileName()
+    filename: getFileName("js"),
+    
+    // Очистка директории "dist" перед каждой новой сборкой
+    clean: true,
+  },
+
+
+
+  // Плагины, используемые в процессе сборки
+  plugins: [
+    // Генерация HTML-файла на основе указанного шаблона ("index.html")
+    new HtmlWebpackPlugin({
+      template: "./index.html",
+    }),
+    
+    // Извлечение CSS из JavaScript-бандла и сохранение в отдельный файл, используется функция getFileName()
+    new MiniCssExtractPlugin({
+      filename: getFileName("css"),
+    }),
+  ],
+
   
-  const updaters = {
-    temperature: textUpdater,
-    pressure: textUpdater,
-    humidity: textUpdater,
-    wind: textUpdater,
-    description: textUpdater,
-    windDirection: textUpdater,
-    icon: (element, data) => {
-      element.src = genWeatherIconLink(data);
+  // Правила обработки различных типов файлов
+  module: {
+    rules: [
+      // Правило для файлов с расширением ".s[ac]ss" (как ".scss" и ".sass")
+      {
+        test: /\.s[ac]ss$/i, //.scss .sass
+        
+        // Используется MiniCssExtractPlugin.loader для извлечения CSS в отдельные файлы,
+        // затем файл проходит через загрузчики css-loader и sass-loader
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader",
+        ],
+      },
+      
+      // Правило для файлов с расширением ".csv"
+      {
+        test: /\.csv$/,
+        // Файлы с расширением .csv обрабатываются загрузчиком csv-loader
+        use: ["csv-loader"],
+      },
+      
+      // Правило для файлов с расширением ".xml"
+      {
+        test: /\.xml$/,
+        // Файлы с расширением .xml обрабатываются загрузчиком xml-loader
+        use: ["xml-loader"],
+      },
+    ],
+  },
+  
+  // Псевдонимы для упрощения импорта модулей
+  resolve: {
+    alias: {
+      // Псевдоним "@" для директории "./src"
+      "@": path.resolve(__dirname, "./src"),
+      
+      // Псевдоним "@js" для директории "./src/js"
+      "@js": path.resolve(__dirname, "./src/js"),
+      
+      // Псевдоним "@style" для директории "./src/styles"
+      "@style": path.resolve(__dirname, "./src/styles"),
+      
+      // Псевдоним "@assets" для директории "./src/assets"
+      "@assets": path.resolve(__dirname, "./src/assets"),
     },
-  };
-
-  function setWeatherData(city) {
-    hideWeatherBlock();
-    getWeatherDataByCity(city)
-      .then(
-        (data) => {
-          console.log(data)
-          updatedElements.forEach((element) => {
-            const id = element.id;
-            const newData = data[id];
-            const updater = updaters[id];
-            if (newData && updater && typeof updater === "function") {
-              updater(element, newData);
-            }
-          });
-        },
-        () => {
-          alert("Щось пішло не так. Спробуйте пізніше.");
-        }
-      )
-      .finally(() => {
-        showWeatherBlock();
-      });
-  }
-
-  async function getWeatherDataByCity(city) {
-    const API_KEY = "428ed9c20a980dc9c96118fc1ca2f88b";
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=${API_KEY}&lang=uk`;
-
-    try {
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error("Request failed with status " + response.status);
-      }
-
-      const data = await response.json();
-      const {
-        main: { temp: temperature, pressure, humidity },
-        wind: { speed: wind, deg: windDegree },
-        weather: [{ description, icon }],
-      } = data;
-
-      return {
-        temperature,
-        pressure,
-        humidity,
-        wind,
-        description,
-        windDirection: getWindDirection(windDegree),
-        icon,
-      };
-    } catch (error) {
-      console.error(error);
-      return Promise.reject(error);
-    }
-  }
-
-  function getWindDirection(windDegree) {
-    const directions = [
-      "Північний",
-      "Північно-східний",
-      "Східний",
-      "Південно-східний",
-      "Південний",
-      "Південно-західний",
-      "Західний",
-      "Північно-західний",
-    ];
-
-    const index = Math.round(windDegree / 45) % 8;
-    return directions[index];
-  }
-
-  const chooserCity = document.getElementById("chooserCity");
-  const defaultCity = chooserCity.value;
-  const onChangeCityHandler = function (event) {
-    event.preventDefault();
-    setWeatherData(this.value);
-  };
-  chooserCity.addEventListener("change", onChangeCityHandler);
-  setWeatherData(defaultCity);
+  },
 };
