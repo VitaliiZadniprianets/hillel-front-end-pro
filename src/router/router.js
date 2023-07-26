@@ -6,7 +6,7 @@ import SignUp from "@/pages/signup/SignUp";
 
 const routes = [
     {
-        path: '/',
+        path: '/movies',
         component: Movies
     },
     {
