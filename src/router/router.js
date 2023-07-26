@@ -6,7 +6,7 @@ import SignUp from "@/pages/signup/SignUp";
 
 const routes = [
     {
-        path: '/movies',
+        path: '/',
         component: Movies
     },
     {
@@ -14,12 +14,12 @@ const routes = [
         component: SignIn
     },
     {
-        path: '*',
-        component: NotFound
-    },
-    {
         path: '/sign-up',
         component: SignUp
+    },
+    {
+        path: '*',
+        component: NotFound
     },
 ]
 
