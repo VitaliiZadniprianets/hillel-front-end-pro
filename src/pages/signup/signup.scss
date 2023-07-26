@@ -1,5 +1,21 @@
-$number: 1;
-$color: #ff0000;
-$text: "tproger forever.";
-$text: "IT forever." !default;
-$nothing: null;
+.signup-page {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px;
+
+    h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    p {
+        font-size: 16px;
+        color: #555;
+    }
+
+     
+    
+}
