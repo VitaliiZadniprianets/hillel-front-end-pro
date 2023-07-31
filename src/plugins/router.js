@@ -1,51 +1,71 @@
 import Component from "@/plugins/component";
 
 export default class Router {
-    routes = []
-    originalPushState = null;
+  routes = [];
+  originalPushState = null;
+  #container = null;
+  #subBeforeEach = [];
 
-    constructor(routes) {
-        console.log('---- start configuration Router Plugin ---');
+  constructor(routes) {
+    console.log("---- start configuration Router Plugin ---");
 
+    this.routes = routes;
 
-        this.routes = routes;
+    this.originalPushState = history.pushState;
 
-        this.originalPushState = history.pushState;
+    history.pushState = (state, title, pathTo) => {
+      console.log("---- call pushState ---");
+      this.go(pathTo);
+    };
 
-        history.pushState = function (state, title, pathTo) {
-            console.log('---- call pushState ---');
+    history.onpushstate = (state, title, pathTo) => {
+      this.#updateView(pathTo);
+      this.originalPushState.apply(history, [state, title, pathTo]);
+    };
+  }
 
-            if (typeof history.onpushstate === 'function') {
-                history.onpushstate(state, title, pathTo);
-            }
-        }
+  onInit() {
+    this.#container = document.querySelector(".router-view");
+  }
 
+  #updateView(pathTo) {
+    let Component = this.#findComponent(pathTo) || this.#findComponent("*");
 
-        history.onpushstate = (state, title, pathTo) => {
-            this.#updateView(pathTo);
-            this.originalPushState.apply(history, [state, title, pathTo]);
-        }
+    if (Component) {
+      this.#renderComponent(Component);
     }
+  }
 
+  #findComponent(pathTo) {
+    return this.routes.find((route) => route.path === pathTo)?.component;
+  }
 
-    onInit() {
-        console.log('----start Router plugin-----')
-    }
+  // innerHTML VS createElement
 
+  #renderComponent(Component) {
+    this.#container.innerHTML = "";
+    this.#container.append(new Component().render());
+  }
 
-    #updateView(pathTo) {
-        let ComponentSearched = this.#findComponent(pathTo)
-        if (!(new ComponentSearched instanceof Component)) {
-            ComponentSearched = this.#findComponent('*')
-        }
-        this.#renderComponent(ComponentSearched)
-    }
+  go(pathTo) {
+    const next = (anotherPathTo = null) => {
+      if (typeof history.onpushstate === "function") {
+        history.onpushstate(null, null, anotherPathTo || pathTo);
+      }
+    };
 
-    #findComponent(pathTo) {
-        return this.routes.find(route => route.path === pathTo)?.component
-    }
+    const pathFrom = location.pathname;
 
-    #renderComponent(Component) {
-        document.querySelector('#app').innerHTML = new Component();
-    }
+    this.#publishBeforeEach(pathFrom, pathTo, next);
+  }
+
+  #publishBeforeEach(...args) {
+    this.#subBeforeEach.forEach((cb) => cb(...args));
+  }
+
+  beforeEach(cb) {
+    if (!cb) return;
+
+    this.#subBeforeEach.push(cb);
+  }
 }
