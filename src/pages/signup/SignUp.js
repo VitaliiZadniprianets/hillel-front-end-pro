@@ -2,7 +2,7 @@ import Component from "@/plugins/component";
 import "./signup.scss";
 import { AsNode } from "@/common/decorators";
 import Button from "@/common/components/Button/Button";
-import SignUpInput from "@/pages/signup/SignUpInput";
+import Input from "@/common/components/Input/Input";
 import Heading from "@/common/components/Heading/Heading";
 import { router } from "@/router/router";
 
@@ -13,14 +13,14 @@ export default class SignUp extends Component {
       text: "Please sign Up",
       classList: ["h3", "mb-3", "fw-normal"],
     });
-    const LoginInput = new SignUpInput({
+    const LoginInput = new Input({
       type: "email",
       name: "login",
       id: "login",
       label: "Login",
     });
 
-    const PasswordInput = new SignUpInput({
+    const PasswordInput = new Input({
       type: "password",
       name: "password",
       id: "password",
