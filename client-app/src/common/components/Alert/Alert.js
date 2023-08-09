@@ -9,7 +9,7 @@ export default class Alert extends Component {
   generator = null;
 
   alert = {
-      time: 2000,
+      time: 3500,
       close: true,
       maxWidth: '400px',
       maxLength: '30'
