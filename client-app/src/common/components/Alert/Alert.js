@@ -51,6 +51,7 @@ export default class Alert extends Component {
       this.generator = null;
   }
 
+  
   * process() {
       while(this.queue.length !== 0) {
           const alert = this.queue.shift();
@@ -96,6 +97,7 @@ export default class Alert extends Component {
           </div>
       `;
   }
+
 
   @SaveContainer
   render() {
