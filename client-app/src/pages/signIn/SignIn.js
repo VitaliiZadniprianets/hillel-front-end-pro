@@ -1,85 +1,74 @@
-import "./signin.scss";
+import './Signin.scss'
 import Component from "@/plugins/component";
 import Input from "@/common/components/Input/Input";
 import { AsNode, BindEvent } from "@/common/decorators";
 import { mutation_types, store } from "@/store/store";
+import axios from "axios";
+import httpService from "@/common/serives/Http.service";
+import {router} from "@/router/router";
 
 export default class SignIn extends Component {
-  credentials = {};
+    credentials = {}
 
-  onInputChangeHandler(event) {
-    const { value, name } = event.target;
-    this.credentials[name] = value;
-  }
 
-  async onClickHandler(event) {
-    // store.dispatch(mutation_types.SET_IS_LOADING, true);
-    const a = [
-      "alert-success",
-      "alert-primary",
-      "alert-secondary",
-      "alert-danger",
-      "alert-warning",
-      "alert-info",
-      "alert-light",
-      "alert-dark",
-    ];
-    store.dispatch(mutation_types.SET_ALERT, {
-      type: a[Math.floor(Math.random() * a.length)],
-      message: `Ви авторизовані успішно`,
-    });
-    const { login, password } = this.credentials;
-
-    let response;
-
-    if (login && password) {
-      response = await this.onSignIn();
+    onInputChangeHandler(event) {
+        const { value, name } = event.target;
+        this.credentials[name] = value;
     }
 
-    setTimeout(() => {
-      
-    }, 1000);
-  }
+    async onClickHandler(event) {
+        const { login, password } = this.credentials;
 
-  async onSignIn() {
-    const response = await (
-      await fetch("http://localhost:9001/sign-in", {
-        method: "POST",
-        body: this.credentials,
-      })
-    ).json();
+        if (login && password) {
+            this.onSignIn().catch((e) => null)
+        }
+    }
 
-    console.log(response, "response");
-    return response;
-  }
 
-  updateTemplate(template) {
-    const LoginInput = new Input({
-      type: "text",
-      name: "login",
-      id: "login",
-      label: "Login",
-      onChange: this.onInputChangeHandler.bind(this),
-    });
+    async onSignIn() {
+        const response = await httpService.post(
+            '/sign-in',
+            this.credentials
+        );
 
-    const PasswordInput = new Input({
-      type: "password",
-      name: "password",
-      id: "password",
-      label: "Password",
-      onChange: this.onInputChangeHandler.bind(this),
-    });
+        if (response.status === 200) {
+            store.dispatch(mutation_types.SET_ALERT, {
+                type: 'alert-success',
+                message: 'Ви авторизовані успішно'
+            })
+            store.dispatch(mutation_types.SET_USER_INFO, response.data);
 
-    return this.replaceSlot(
-      template,
-      { key: 'slot[name="login"]', replacer: () => LoginInput.render() },
-      { key: 'slot[name="password"]', replacer: () => PasswordInput.render() },
-    );
-  }
+            router.go('/')
+        }
+    }
 
-  @AsNode
-  getTemplate() {
-    return `
+    updateTemplate(template) {
+        const LoginInput = new Input({
+            type: 'text',
+            name: 'login',
+            id: 'login',
+            label: 'Login',
+            onChange: this.onInputChangeHandler.bind(this)
+        });
+
+        const PasswordInput = new Input({
+            type: 'password',
+            name: 'password',
+            id: 'password',
+            label: 'Password',
+            onChange: this.onInputChangeHandler.bind(this)
+        });
+
+        return this.replaceSlot(
+            template,
+            { key: 'slot[name="login"]', replacer: () => LoginInput.render() },
+            { key: 'slot[name="password"]', replacer: () => PasswordInput.render() }
+        );
+    }
+
+    @AsNode
+    getTemplate() {
+           return `
             <div class="sign-in d-flex justify-content-center align-items-center">
                 <div class="card col-6">
                     <div class="card-body">
@@ -90,18 +79,21 @@ export default class SignIn extends Component {
                     </div>
                 </div>
             </div>
-        `;
-  }
+        `
+    }
 
-  bindEvent(node) {
-    console.log(node, "node");
-    node
-      .querySelector("button")
-      .addEventListener("click", this.onClickHandler.bind(this));
-  }
+    bindEvent(node) {
+        console.log(node, 'node');
+        node.querySelector('button').addEventListener(
+            'click',
+            this.onClickHandler.bind(this)
+        )
+    }
 
-  @BindEvent
-  render() {
-    return this.updateTemplate(this.getTemplate());
-  }
+    @BindEvent
+    render() {
+        return this.updateTemplate(
+            this.getTemplate()
+        );
+    }
 }

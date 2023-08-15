@@ -2,32 +2,35 @@ import Router from "@/plugins/router";
 import Movies from "@/pages/movies/Movies";
 import SignIn from "@/pages/signIn/SignIn";
 import NotFound from "@/pages/not-found/NotFound";
+import {store} from "@/store/store";
 
 const routes = [
-  {
-    path: "/",
-    component: Movies,
-  },
-  {
-    path: "/sign-in",
-    component: SignIn,
-    beforeEach() {},
-  },
-  {
-    path: "*",
-    component: NotFound,
-  },
-];
+    {
+        path: '/',
+        component: Movies
+    },
+    {
+        path: '/sign-in',
+        component: SignIn,
+        beforeEach() {
 
-export const router = new Router(routes);
+        }
+    },
+    {
+        path: '*',
+        component: NotFound
+    }
+]
 
-const isAuth = false;
+export const router = new Router(routes)
+
 
 router.beforeEach(function (from, to, next) {
-  if (isAuth) {
-    next();
-    return;
-  }
+    if (store.state.userInfo) {
+        next(to);
+        return;
+    }
 
-  next("/sign-in");
+
+    next('/sign-in');
 });

@@ -1,8 +1,8 @@
 import Component from "@/plugins/component";
-import Observer from "./observer";
+import Observer from "@/plugins/observer";
 
 export default class Router {
-    routes = [];
+    routes = []
     originalPushState = null;
     #container = null;
     #observerBeforeEach = new Observer()
@@ -15,32 +15,33 @@ export default class Router {
         this.originalPushState = history.pushState;
 
         history.pushState = (state, title, pathTo) => {
-            console.log('---- call pushState ---');
             this.go(pathTo);
         }
 
+
         history.onpushstate = (state, title, pathTo) => {
-            this.#updateView(pathTo);
-            this.originalPushState.apply(history, [state, title, pathTo]);
+            setTimeout(() => {
+                this.originalPushState.apply(history, [state, title, pathTo]);
+            });
         }
     }
 
     onInit() {
-        this.#container = document.querySelector('.router-view');
+       this.#container = document.querySelector('.router-view');
     }
 
     #updateView(pathTo) {
-        let Component = (this.#findComponent(pathTo) || this.#findComponent('*'));
-    
+        let Component = (this.#findComponent(pathTo) || this.#findComponent('*'))
+
         if (Component) {
-            this.#renderComponent(Component);
-        } 
+            this.#renderComponent(Component)
+        }
     }
-    
+
     #findComponent(pathTo) {
-        return this.routes.find(route => route.path === pathTo)?.component;
+        return this.routes.find(route => route.path === pathTo)?.component
     }
-    
+
     // innerHTML VS createElement
 
     #renderComponent(Component) {
@@ -49,17 +50,20 @@ export default class Router {
     }
 
     go(pathTo) {
+        const next = (anotherPathTo) => {
+            const route = anotherPathTo || pathTo;
 
-        const next = (anotherPathTo = null ) => {
-            this.#updateView(pathTo);
             if (typeof history.onpushstate === 'function') {
-                history.onpushstate(null, null, anotherPathTo || pathTo);
+                history.onpushstate(null, null, route);
             }
+
+            this.#updateView(route);
         }
 
         const pathFrom = location.pathname;
 
         this.#publishBeforeEach(pathFrom, pathTo, next)
+
     }
 
     #publishBeforeEach(...args) {
@@ -71,4 +75,6 @@ export default class Router {
 
         this.#observerBeforeEach.subscribe(cb);
     }
+
+
 }

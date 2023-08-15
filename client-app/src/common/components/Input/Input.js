@@ -1,21 +1,27 @@
-import "./input.scss";
+import './input.scss';
 import Component from "@/plugins/component";
 import { AsNode } from "@/common/decorators";
 
+
 class Input extends Component {
-  constructor(...props) {
-    super(...props);
+    constructor(...props) {
+        super(...props);
 
-    console.log(this.props, "props");
-  }
+        console.log(this.props, 'props');
+    }
 
-  onChangeHandler(event) {
-    this.props.onChange(event);
-  }
+    onChangeHandler(event) {
+        this.props.onChange(event);
+    }
 
-  @AsNode
-  getTemplate() {
-    return `
+
+    // innerHTML = string vs append(node)
+    /// createElement vs Template String
+
+
+    @AsNode
+    getTemplate() {
+        return `
             <div class="mb-3">
                 <label
                   for="login"
@@ -30,17 +36,16 @@ class Input extends Component {
                 />
             </div>
         `;
-  }
 
-  bindEvent(node) {
-    node
-      .querySelector("input")
-      .addEventListener("change", (event) => this.onChangeHandler(event));
-    return node;
-  }
+    }
 
-  render() {
-    return this.bindEvent(this.getTemplate());
-  }
+    bindEvent(node) {
+        node.querySelector('input').addEventListener('change', (event) => this.onChangeHandler(event))
+        return node;
+    }
+
+    render() {
+        return this.bindEvent(this.getTemplate());
+    }
 }
 export default Input;

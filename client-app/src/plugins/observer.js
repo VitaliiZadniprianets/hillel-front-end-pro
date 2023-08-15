@@ -1,15 +1,15 @@
 export default class Observer {
-    observers = [];
+    observers = []
 
     subscribe(cb) {
         this.observers.push(cb);
     }
 
     unsubscribe(cb) {
-        this.observers = this.observers.filter(currentCb => currentCb !== cb);
+       this.observers = this.observers.filter(currentCb => currentCb !== cb);
     }
 
     broadcast(...args) {
-        this.observers.forEach(cb => cb(...args));
+        this.observers.forEach(cb => cb(...args))
     }
 }

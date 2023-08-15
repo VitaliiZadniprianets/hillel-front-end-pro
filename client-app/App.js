@@ -1,10 +1,10 @@
 import Component from "@/plugins/component";
 import Loader from "@/common/components/loader/Loader";
-import { AsFragment } from "@/common/decorators";
 import Alert from "@/common/components/alert/Alert";
+import {AsNode} from "@/common/decorators";
 
 export default class App extends Component {
-    @AsFragment
+    @AsNode
     getTemplate() {
         return `
             <main class="main-app d-flex min-vh-100">
