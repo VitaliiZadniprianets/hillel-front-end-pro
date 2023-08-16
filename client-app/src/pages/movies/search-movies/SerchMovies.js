@@ -43,5 +43,6 @@ export default class SearchMovies extends Component {
     @BindEvent
     render() {
         return this.getTemplate();
+ 
     }
 }
