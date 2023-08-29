@@ -1,0 +1,61 @@
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.ReactModal__Content {
+  border: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  z-index: 1001;
+}
+
+/* Додатковий внутрішній відступ для контейнера форми */
+.ContactForm-container {
+  padding: 10px;
+}
+
+/* Стилі для кнопок в модальному вікні */
+.ReactModal__Content button {
+  margin-top: 10px;
+  margin-right: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.ReactModal__Content button:last-child {
+  margin-right: 0;
+}
+
+.ReactModal__Content button:hover {
+  background-color: #0056b3;
+}
+
+/* Стилі для інпутів в модальному вікні */
+.ReactModal__Content input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Зменшуємо висоту рядка для текстових віджетів форми */
+.ReactModal__Content label {
+  line-height: 1.2;
+}
+
+/* Стилі для заголовка модального вікна */
+.ReactModal__Content h2 {
+  margin-bottom: 20px;
+}

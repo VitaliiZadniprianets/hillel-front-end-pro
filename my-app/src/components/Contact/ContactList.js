@@ -5,7 +5,7 @@ const ContactList = ({ contacts, onDelete }) => {
   return (
     <div>
       <table>
-        <ContactsHeader /> {/* Используем компонент ContactsHeader здесь */}
+        <ContactsHeader />
         <tbody>
           {contacts.map(contact => (
             <tr key={contact.id}>

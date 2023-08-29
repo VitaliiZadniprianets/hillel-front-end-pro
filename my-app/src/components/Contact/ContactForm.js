@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const ContactForm = ({ onSave, onCancel }) => {
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [phone, setPhone] = useState('');
-
+const ContactForm = ({ onSave, onCancel, name, setName, username, setUsername, phone, setPhone }) => {
   const handleSubmit = event => {
     event.preventDefault();
     onSave({ name, username, phone });
