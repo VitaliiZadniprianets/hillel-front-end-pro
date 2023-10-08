@@ -2,7 +2,11 @@ import tkinter as tk
 from tkinter import scrolledtext
 from random import choice
 
+last_computer_letter = None
+
 def check_city():
+    global last_computer_letter
+    
     city = entry.get().title()
     if not city :
         response = f"Ви не ввели місто"
@@ -10,16 +14,19 @@ def check_city():
         response = f"Місто {city} вже було використано!"
     elif city not in cities:
         response = f"Місто {city} відсутнє в списку яке знає гра"
+    elif last_computer_letter and city[0] != last_computer_letter:
+        response = f"Місто повинно починатися на літеру {last_computer_letter}"     
     else: 
         used_cities.append(city)
-        last_letter = city[-1].upper()
-        if last_letter in ["Ь", "Й", "И"]:
-            last_letter = city[-2].upper()
+        
+        last_letter = get_last_letter(city)
+       
         computer_city = get_city_by_letter(last_letter)
         if not computer_city:
             response = f"Ви виграли! Я не знаю міст на літеру {last_letter}"
         else:
             used_cities.append(computer_city)
+            last_computer_letter = get_last_letter(computer_city)
             response = f"Мій варіант місто - {computer_city}"
             
             
@@ -31,7 +38,12 @@ def check_city():
     notification.config(text=response)
     entry.delete(0, tk.END)
 
-
+def get_last_letter(city):
+     last_letter = city[-1].upper()
+     if last_letter in ["Ь", "Й", "И"]:
+        last_letter = city[-2].upper()
+     return last_letter
+    
 def get_city_by_letter(letter):
     avaliable_cities = []
     for city in cities:
@@ -41,7 +53,23 @@ def get_city_by_letter(letter):
         return choice(avaliable_cities)
     return None        
 
-cities = ['Київ', 'Вінниця', 'Глухів', 'Кривий Ріг', 'Одеса', 'Херсон', 'Миколаїв', 'Львів', 'Запоріжжя', 'Харків']
+def surrender():
+    game_log.config(state=tk.NORMAL)
+    game_log.insert(tk.END, f"Python win! You lose!)\n")
+    game_log.yview(tk.END)
+    game_log.config(state=tk.DISABLED)
+    notification.config(text="Я знову переміг. Спробуй кинути мені виклик знову")
+    entry.delete(0, tk.END)
+
+
+def load_cities_from_file(filename):
+    cities = []
+    with open(filename, "r", encoding="utf-8") as fd:
+        for line in fd: 
+            cities.append(line.strip())
+    return cities
+    
+cities = load_cities_from_file('cities.txt')
 used_cities = []
 
 root = tk.Tk()
@@ -57,8 +85,14 @@ label.pack(padx=10, pady=10)
 entry = tk.Entry(left_frame, width=35)
 entry.pack(padx=10, pady=10)
 
-button = tk.Button(left_frame, text='Відправити', command=check_city)
-button.pack(padx=10, pady=10)
+button_frame = tk.Frame(left_frame)
+button_frame.pack(pady=10)
+
+button = tk.Button(button_frame, text='Відправити', command=check_city)
+button.pack(padx=10, side=tk.LEFT)
+
+button_end = tk.Button(button_frame, text='Визнати поразку', command=surrender)
+button_end.pack(padx=10, side=tk.LEFT)
 
 notification = tk.Label(left_frame, text='')
 notification.pack(padx=10, pady=10)
