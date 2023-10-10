@@ -155,16 +155,20 @@ ul, ol {
     margin-bottom: 8px;
 }
 
-.my-project-item {
+.my-project-item-inside {
     color: #000;
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
     line-height: 24px;
+    display: flex;
+    align-items: first baseline;
+    width: 508px;
 }
 
 .my-project-list {
     padding-left: 16px;
+    font-weight: bold;
 }
 
 .my-project-item-link {
@@ -180,10 +184,16 @@ ul, ol {
     font-size: 14px;
     font-weight: 400;
     line-height: 24px;
+    flex-basis: 200px;
 }
 
 .my-projects-container {
     margin-bottom: 40px;
+}
+
+.project-item-dots {
+    flex-grow: 1;
+    border-bottom: 1px dotted;
 }
 
 /* Work Experience */
